@@ -31,7 +31,9 @@ public class Purchase {
     private String mPurchaseCardName;
 
     //Constructor
-    public Purchase(@NonNull String PurchaseName, @NonNull DateFormat PurchaseDate, @NonNull Float PurchasePrice, @NonNull String PurchaseSDescp, @NonNull String PurchaseCardName){
+    public Purchase(@NonNull String PurchaseName, @NonNull DateFormat PurchaseDate,
+                    @NonNull Float PurchasePrice, @NonNull String PurchaseSDescp,
+                    @NonNull String PurchaseCardName){
         this.mPurchaseName = PurchaseName;
         this.mPurchaseDate = PurchaseDate;
         this.mPurchasePrice = PurchasePrice;
