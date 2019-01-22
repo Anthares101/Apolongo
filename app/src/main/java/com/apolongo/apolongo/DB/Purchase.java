@@ -1,4 +1,4 @@
-package com.apolongo.apolongo;
+package com.apolongo.apolongo.DB;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,6 +8,7 @@ import android.text.format.DateFormat;
 
 @Entity(tableName = "purchase_table")
 public class Purchase {
+    
     //Private attributes declaration
     @PrimaryKey
     @ColumnInfo(name = "purchase_name")
@@ -35,4 +36,10 @@ public class Purchase {
     public String getPurchaseName(){return mPurchaseName;}
     public Float getPurchasePrice(){return mPurchasePrice;}
     public String getPurchaseSDescp() {return mPurchaseSDescp;}
+
+    //Setters
+    public void setPurchaseName(String PurchaseName) {this.mPurchaseName = PurchaseName;}
+    public void setPurchaseDate(DateFormat PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
+    public void setPurchasePrice(Float PurchasePrice) {this.mPurchasePrice = PurchasePrice;}
+    public void setPurchaseSDescp(String PurchaseDescp) {this.mPurchaseSDescp = PurchaseDescp;}
 }
