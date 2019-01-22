@@ -13,13 +13,16 @@ public class ApolongoRepository {
 
     //purchases_table
     private PurchaseDao mPurchaseDao;
-    private List<Purchase> mPurchase;
     private LiveData<List<Purchase>> mAllPurchases;
 
     ApolongoRepository(Application application){
         ApolongoDB db = ApolongoDB.getDatabase(application);
+
         mCardDao = db.cardDao();
         mPurchaseDao = db.purchaseDao();
+
+        mAllCards = mCardDao.getAllCards();
+        mAllPurchases = mPurchaseDao.getAllPurchases();
     }
 
     //cards_table operations
@@ -49,7 +52,7 @@ public class ApolongoRepository {
     }
 
     List<Purchase> getPurchase(String cardName){
-        return mPurchase;
+        return mPurchaseDao.getPurchase(cardName);
     }
 
     //Async tasks
