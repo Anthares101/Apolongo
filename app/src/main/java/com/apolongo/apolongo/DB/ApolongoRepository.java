@@ -15,7 +15,8 @@ public class ApolongoRepository {
     private PurchaseDao mPurchaseDao;
     private LiveData<List<Purchase>> mAllPurchases;
 
-    ApolongoRepository(Application application){
+    //Constructor
+    public ApolongoRepository(Application application){
         ApolongoDB db = ApolongoDB.getDatabase(application);
 
         mCardDao = db.cardDao();
@@ -26,7 +27,7 @@ public class ApolongoRepository {
     }
 
     //cards_table operations
-    LiveData<List<Card>> getAllCards(){
+    public LiveData<List<Card>> getAllCards(){
         return mAllCards;
     }
 
@@ -39,7 +40,7 @@ public class ApolongoRepository {
     }
 
     //purchases_table operations
-    LiveData<List<Purchase>> getAllPurchases(){
+    public LiveData<List<Purchase>> getAllPurchases(){
         return mAllPurchases;
     }
 
@@ -51,7 +52,7 @@ public class ApolongoRepository {
         new deletePurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
-    List<Purchase> getPurchase(String cardName){
+    public List<Purchase> getPurchase(String cardName){
         return mPurchaseDao.getPurchase(cardName);
     }
 
