@@ -24,7 +24,8 @@ public class Purchase {
     private String mPurchaseSDescp; //Short description of the purchase
 
     //Constructor
-    public Purchase(@NonNull String PurchaseName, @NonNull DateFormat PurchaseDate, @NonNull Float PurchasePrice, @NonNull String PurchaseSDescp){
+    public Purchase(@NonNull String PurchaseName, @NonNull DateFormat PurchaseDate,
+                    @NonNull Float PurchasePrice, @NonNull String PurchaseSDescp){
         this.mPurchaseName = PurchaseName;
         this.mPurchaseDate = PurchaseDate;
         this.mPurchasePrice = PurchasePrice;
