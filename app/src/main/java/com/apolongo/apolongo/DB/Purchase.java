@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
-@Entity(tableName = "purchase_table", foreignKeys = @ForeignKey(entity = Card.class,
+@Entity(tableName = "purchases_table", foreignKeys = @ForeignKey(entity = Card.class,
         parentColumns = "card_name",
         childColumns = "purchase_CardName",
         onDelete = ForeignKey.CASCADE))

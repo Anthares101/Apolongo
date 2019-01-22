@@ -16,9 +16,9 @@ public interface CardDao {
     @Delete
     void delete(Card card);
 
-    @Query("DELETE FROM card_table")
+    @Query("DELETE FROM cards_table")
     void deleteAll();
 
-    @Query("SELECT * from card_table ORDER BY card_name ASC")
+    @Query("SELECT * from cards_table ORDER BY cards_name ASC")
     LiveData<List<Card>> getAllCards();
 }

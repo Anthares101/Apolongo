@@ -16,10 +16,10 @@ public interface PurchaseDao {
     @Delete
     void delete(Purchase purchase);
 
-    @Query("DELETE FROM purchase_table")
+    @Query("DELETE FROM purchases_table")
     void deleteAll();
 
-    @Query("SELECT * FROM purchase_table ORDER BY purchase_date DESC")
+    @Query("SELECT * FROM purchases_table ORDER BY purchase_date DESC")
     LiveData<List<Purchase>> getAllPurchases();
 
 }
