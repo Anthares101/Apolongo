@@ -29,7 +29,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View itemView = mInflater.inflate(R.recyclerview_item, parent, false);
+        View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
         return new CardViewHolder(itemView);
     }
 
