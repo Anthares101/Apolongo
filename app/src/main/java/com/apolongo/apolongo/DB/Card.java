@@ -31,7 +31,7 @@ public class Card {
     public void setCardName(String cardName) {
         this.mCardName = cardName;
     }
-    public void setImage(String imageName) {
+    public void setImageName(String imageName) {
         this.mImageName = imageName;
     }
     public void setBillingCycle(int cycle) {
