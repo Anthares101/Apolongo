@@ -2,6 +2,7 @@ package com.apolongo.apolongo.DB;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -18,10 +19,10 @@ public class Card {
     @ColumnInfo(name = "card_cycle")
     private int mBillingCycle;
 
-    public Card(@NonNull String card, @NonNull String image, @NonNull int cycle){
-        this.mCardName = card;
-        this.mImageName = image;
-        this.mBillingCycle = cycle;
+    public Card(@NonNull String mCardName, @NonNull String mImageName, @NonNull int mBillingCycle){
+        this.mCardName = mCardName;
+        this.mImageName = mImageName;
+        this.mBillingCycle = mBillingCycle;
     }
 
     public String getCardName(){return mCardName;}
@@ -31,7 +32,7 @@ public class Card {
     public void setCardName(String cardName) {
         this.mCardName = cardName;
     }
-    public void setImage(String imageName) {
+    public void setImageName(String imageName) {
         this.mImageName = imageName;
     }
     public void setBillingCycle(int cycle) {
