@@ -25,7 +25,7 @@ public class ApolongoViewModel extends AndroidViewModel {
     }
 
     //Cards operations
-    LiveData<List<Card>> getAllWords() { return mAllCards; }
+    LiveData<List<Card>> getAllCards() { return mAllCards; }
     public void insertCard(Card card) { mRepository.insertCard(card); }
     public void deleteCard(Card card) { mRepository.deleteCard(card); }
 

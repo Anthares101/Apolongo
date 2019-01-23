@@ -1,13 +1,11 @@
 package com.apolongo.apolongo;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 
-        mApolongoViewModel.getAllWords().observe(this, new Observer<List<Card>>() {
+        mApolongoViewModel.getAllCards().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
                 //Update the cached copy of the words in the adapter
