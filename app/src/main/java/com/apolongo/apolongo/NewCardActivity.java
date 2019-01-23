@@ -32,6 +32,8 @@ public class NewCardActivity extends AppCompatActivity {
                     String cardName = mEditCardView.getText().toString();
                     replyIntent.putExtra(EXTRA_REPLY, cardName);
                     setResult(RESULT_OK, replyIntent);
+                    //It goes back to MainActivity
+                    finish();
                 }
             }
         });
