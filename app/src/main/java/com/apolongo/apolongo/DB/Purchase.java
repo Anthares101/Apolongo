@@ -3,11 +3,13 @@ package com.apolongo.apolongo.DB;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
-@Entity(tableName = "purchases_table", foreignKeys = @ForeignKey(entity = Card.class,
+@Entity(tableName = "purchases_table", indices = {@Index("purchase_CardName")}, //The index ignores a warning
+        foreignKeys = @ForeignKey(entity = Card.class,
         parentColumns = "card_name",
         childColumns = "purchase_CardName",
         onDelete = ForeignKey.CASCADE))
@@ -15,11 +17,12 @@ public class Purchase {
     
     //Private attributes declaration
     @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "purchase_name")
     private String mPurchaseName;
     @NonNull
     @ColumnInfo(name = "purchase_date")
-    private DateFormat mPurchaseDate;
+    private String mPurchaseDate;
     @NonNull
     @ColumnInfo(name = "purchase_price")
     private Float mPurchasePrice;
@@ -31,26 +34,26 @@ public class Purchase {
     private String mPurchaseCardName;
 
     //Constructor
-    public Purchase(@NonNull String PurchaseName, @NonNull DateFormat PurchaseDate,
-                    @NonNull Float PurchasePrice, @NonNull String PurchaseSDescp,
-                    @NonNull String PurchaseCardName){
-        this.mPurchaseName = PurchaseName;
-        this.mPurchaseDate = PurchaseDate;
-        this.mPurchasePrice = PurchasePrice;
-        this.mPurchaseSDescp = PurchaseSDescp; //Short description is gonna be optional
-        this.mPurchaseCardName = PurchaseCardName;
+    public Purchase(@NonNull String mPurchaseName, @NonNull String mPurchaseDate,
+                    @NonNull Float mPurchasePrice, @NonNull String mPurchaseSDescp,
+                    @NonNull String mPurchaseCardName){
+        this.mPurchaseName = mPurchaseName;
+        this.mPurchaseDate = mPurchaseDate;
+        this.mPurchasePrice = mPurchasePrice;
+        this.mPurchaseSDescp = mPurchaseSDescp; //Short description is gonna be optional
+        this.mPurchaseCardName = mPurchaseCardName;
     }
 
     //Getters
-    public DateFormat getPruchaseDate() {return mPurchaseDate;}
+    public String getPurchaseDate() {return mPurchaseDate;}
     public String getPurchaseName(){return mPurchaseName;}
     public Float getPurchasePrice(){return mPurchasePrice;}
     public String getPurchaseSDescp() {return mPurchaseSDescp;}
-    public String getCardName() {return mPurchaseCardName;}
+    public String getPurchaseCardName() {return mPurchaseCardName;}
 
     //Setters
     public void setPurchaseName(String PurchaseName) {this.mPurchaseName = PurchaseName;}
-    public void setPurchaseDate(DateFormat PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
+    public void setPurchaseDate(String PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
     public void setPurchasePrice(Float PurchasePrice) {this.mPurchasePrice = PurchasePrice;}
     public void setPurchaseSDescp(String PurchaseDescp) {this.mPurchaseSDescp = PurchaseDescp;}
     public void setPurchaseCardName(String PurchaseCard) {this.mPurchaseCardName = PurchaseCard;}
