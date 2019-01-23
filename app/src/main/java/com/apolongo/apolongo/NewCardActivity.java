@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 public class NewCardActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.apolongo.android.wordlistsql.REPLY";
+    public static final String EXTRA_REPLY = "com.apolongo.android.cardlistsql.REPLY";
 
     private EditText mEditCardView;
 
