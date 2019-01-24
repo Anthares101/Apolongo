@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Card;
 
@@ -13,12 +14,31 @@ import java.util.List;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
 
-    class CardViewHolder extends RecyclerView.ViewHolder{
+    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private final TextView cardItemView;
+        private ItemClickListener mItemClickListener;
 
         private CardViewHolder(View itemView){
             super(itemView);
             cardItemView = itemView.findViewById(R.id.textView);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        private void setItemClickListener(ItemClickListener itemClickListener){
+            this.mItemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View view){
+            mItemClickListener.onClick(view, getAdapterPosition(), false);
+        }
+
+        @Override
+        public boolean onLongClick(View view){
+            mItemClickListener.onClick(view, getAdapterPosition(), true);
+            return true;
         }
     }
 
@@ -41,6 +61,16 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         } else{
             holder.cardItemView.setText("No name");
         }
+
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                if(isLongClick)
+                    Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(mInflater.getContext(), "Short Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     void setCards(List<Card> cards){
