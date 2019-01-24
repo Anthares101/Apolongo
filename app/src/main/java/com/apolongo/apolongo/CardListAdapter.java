@@ -1,6 +1,7 @@
 package com.apolongo.apolongo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +68,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             public void onClick(View view, int position, boolean isLongClick) {
                 if(isLongClick)
                     Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(mInflater.getContext(), "Short Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+                else {
+                    Intent intent = new Intent(view.getContext(), CardActivity.class);
+                    view.getContext().startActivity(intent);
+                }
             }
         });
     }
