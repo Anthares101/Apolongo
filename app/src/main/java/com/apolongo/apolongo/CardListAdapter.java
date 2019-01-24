@@ -27,6 +27,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             itemView.setOnLongClickListener(this);
         }
 
+        //Set a listener for both Long and short click in items
         private void setItemClickListener(ItemClickListener itemClickListener){
             this.mItemClickListener = itemClickListener;
         }
@@ -63,13 +64,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             holder.cardItemView.setText("No name");
         }
 
+        //For every Item in the recycler list a OnClick listener is configured
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                if(isLongClick)
+                if(isLongClick)//Long click will allow user to delete a card
                     Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
-                else {
+                else {//Short click will take the user to the selected card purchases area
                     Intent intent = new Intent(view.getContext(), CardActivity.class);
+                    intent.putExtra("cardName", mCards.get(position).getCardName());
                     view.getContext().startActivity(intent);
                 }
             }
