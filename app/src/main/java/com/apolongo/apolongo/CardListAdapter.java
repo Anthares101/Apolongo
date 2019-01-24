@@ -1,6 +1,8 @@
 package com.apolongo.apolongo;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,9 +66,26 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                if(isLongClick)
-                    Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+            public void onClick(final View view, int position, boolean isLongClick) {
+                if(isLongClick){
+                    //Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                    builder.setTitle("Borrar tarjeta");
+                    builder.setMessage("Eliminará todas las compras relacionadas");
+                    builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(view.getContext() , "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                }
                 else
                     Toast.makeText(mInflater.getContext(), "Short Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
             }
