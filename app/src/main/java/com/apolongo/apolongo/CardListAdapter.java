@@ -2,7 +2,11 @@ package com.apolongo.apolongo;
 
 import android.app.AlertDialog;
 import android.content.Context;
+<<<<<<< HEAD
 import android.content.DialogInterface;
+=======
+import android.content.Intent;
+>>>>>>> 3a21537152ee05a8e7c85e012812af44e7a80286
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +32,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             itemView.setOnLongClickListener(this);
         }
 
+        //Set a listener for both Long and short click in items
         private void setItemClickListener(ItemClickListener itemClickListener){
             this.mItemClickListener = itemClickListener;
         }
@@ -64,18 +69,18 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             holder.cardItemView.setText("No name");
         }
 
+        //For every Item in the recycler list a OnClick listener is configured
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(final View view, int position, boolean isLongClick) {
-                if(isLongClick){
-                    //Toast.makeText(mInflater.getContext(), "Long Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
+                if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle("Borrar tarjeta");
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(view.getContext() , "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
+                            Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -85,9 +90,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                         }
                     });
                     AlertDialog dialog = builder.create();
+                } else {//Short click will take the user to the selected card purchases area
+                    Intent intent = new Intent(view.getContext(), CardActivity.class);
+                    intent.putExtra("cardName", mCards.get(position).getCardName());
+                    view.getContext().startActivity(intent);
                 }
-                else
-                    Toast.makeText(mInflater.getContext(), "Short Click " +mCards.get(position).getCardName(), Toast.LENGTH_LONG).show();
             }
         });
     }
