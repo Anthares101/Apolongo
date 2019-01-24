@@ -2,11 +2,8 @@ package com.apolongo.apolongo;
 
 import android.app.AlertDialog;
 import android.content.Context;
-<<<<<<< HEAD
 import android.content.DialogInterface;
-=======
 import android.content.Intent;
->>>>>>> 3a21537152ee05a8e7c85e012812af44e7a80286
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
