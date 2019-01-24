@@ -87,6 +87,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                         }
                     });
                     AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {//Short click will take the user to the selected card purchases area
                     Intent intent = new Intent(view.getContext(), CardActivity.class);
                     intent.putExtra("cardName", mCards.get(position).getCardName());
