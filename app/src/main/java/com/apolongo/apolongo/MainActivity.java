@@ -55,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(NewCard, NEW_CARD_ACTIVITY_REQUEST_CODE);
             }
         });
+
+        recyclerView.setOnClickListener({
+                Intent CardView = new Intent(getApplicationContext(), CardActivity.class);
+                startActivity(Card);
+        });
     }
 
     //NewCardActivity Result observer
