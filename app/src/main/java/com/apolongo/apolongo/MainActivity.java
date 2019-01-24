@@ -56,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView.setOnClickListener({
+        recyclerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent CardView = new Intent(getApplicationContext(), CardActivity.class);
-                startActivity(Card);
+                startActivity(CardView);
+            }
         });
     }
 
