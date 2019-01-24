@@ -72,7 +72,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             public void onClick(final View view, int position, boolean isLongClick) {
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar tarjeta");
+                    builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override

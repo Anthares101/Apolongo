@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Aponlongo</string>
+    <string name="app_name">Apolongo</string>
     <string name="action_settings">Settings</string>
     <string name="hint_word">Card Name...</string>
     <string name="button_save">Save</string>
