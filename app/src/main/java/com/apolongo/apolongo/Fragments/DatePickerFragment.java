@@ -1,4 +1,4 @@
-package com.apolongo.apolongo;
+package com.apolongo.apolongo.Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
