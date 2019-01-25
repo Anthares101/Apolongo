@@ -37,7 +37,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
                 }else{
                     String purchaseName = mEditPurchaseName.getText().toString();
                     String purchaseDate = mEditPurchaseDate.getText().toString();
-                    String purchasePrice = mEditPurchaseDate.getText().toString();
+                    String purchasePrice = mEditPurchasePrice.getText().toString();
                     replyIntent.putExtra("name", purchaseName);
                     replyIntent.putExtra("date", purchaseDate);
                     replyIntent.putExtra("price", purchasePrice);
