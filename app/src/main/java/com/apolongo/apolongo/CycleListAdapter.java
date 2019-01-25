@@ -78,7 +78,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle("Borrar compra " + mPurchases.get(position).getPurchaseName());
                     final int position_copy = position; //This variable is to evade an error
-                    builder.setMessage("Eliminará todas las compras relacionadas");
+                    builder.setMessage("Eliminará definitivamente esta compra");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
