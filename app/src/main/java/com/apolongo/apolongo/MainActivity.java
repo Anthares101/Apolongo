@@ -31,13 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Add RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final CardListAdapter adapter = new CardListAdapter(this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
+        final CardListAdapter adapter = new CardListAdapter(this, mApolongoViewModel);
 
         mApolongoViewModel.getAllCards().observe(this, new Observer<List<Card>>() {
             @Override
@@ -46,6 +41,12 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setCards(cards);
             }
         });
+
+        //Add RecyclerView
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        //final CardListAdapter adapter = new CardListAdapter(this, mApolongoViewModel);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

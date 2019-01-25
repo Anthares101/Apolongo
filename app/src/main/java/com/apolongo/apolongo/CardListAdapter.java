@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +49,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
     private final LayoutInflater mInflater;
     private List<Card> mCards; //Cached copy of words
+    private ApolongoViewModel mViewModel;
 
-    CardListAdapter(Context context){mInflater = LayoutInflater.from(context);}
+    //We use the viewmodel to remove a Card Later
+    CardListAdapter(Context context, ApolongoViewModel viewModel){
+        mInflater = LayoutInflater.from(context);
+        mViewModel = viewModel;
+    }
 
     @Override
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
@@ -73,11 +79,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
+                    final int number = position; //This variable is to evade an error
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
+                            mViewModel.deleteCard(mCards.get(number));
+                            mCards.remove(number);
+                            notifyItemRemoved(number);
+                            //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
