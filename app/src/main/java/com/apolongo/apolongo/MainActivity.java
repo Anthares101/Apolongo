@@ -37,14 +37,13 @@ public class MainActivity extends AppCompatActivity {
         mApolongoViewModel.getAllCards().observe(this, new Observer<List<Card>>() {
             @Override
             public void onChanged(@Nullable List<Card> cards) {
-                //Update the cached copy of the words in the adapter
+                //Update the cached copy of the cards in the adapter
                 adapter.setCards(cards);
             }
         });
 
         //Add RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        //final CardListAdapter adapter = new CardListAdapter(this, mApolongoViewModel);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
