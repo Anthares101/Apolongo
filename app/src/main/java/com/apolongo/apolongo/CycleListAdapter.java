@@ -104,7 +104,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
         });
     }
 
-    void setCards(List<Purchase> cards){
+    void setPurchases(List<Purchase> cards){
         mPurchases = cards;
         notifyDataSetChanged();
     }
