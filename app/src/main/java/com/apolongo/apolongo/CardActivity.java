@@ -56,8 +56,8 @@ public class CardActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent NewCard = new Intent(getApplicationContext(), NewCardActivity.class);
-                startActivityForResult(NewCard, NEW_PURCHASE_ACTIVITY_REQUEST_CODE);
+                Intent NewPurchase = new Intent(getApplicationContext(), NewPurchaseActivity.class);
+                startActivityForResult(NewPurchase, NEW_PURCHASE_ACTIVITY_REQUEST_CODE);
             }
         });
     }
