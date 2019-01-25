@@ -50,10 +50,11 @@ public class CardActivity extends AppCompatActivity {
         //Add RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton newPurchaseButton = (FloatingActionButton) findViewById(R.id.newPurchaseButton);
+        newPurchaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent NewPurchase = new Intent(getApplicationContext(), NewPurchaseActivity.class);
