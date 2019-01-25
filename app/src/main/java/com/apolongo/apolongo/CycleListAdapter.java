@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Purchase;
 
@@ -76,14 +77,15 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle("Borrar compra " + mPurchases.get(position).getPurchaseName());
-                    final int number = position; //This variable is to evade an error
+                    final int position_copy = position; //This variable is to evade an error
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mViewModel.deletePurchase(mPurchases.get(number));
-                            mCards.remove(number);
-                            notifyItemRemoved(number);
+                            Toast.makeText(view.getContext(), mPurchases.get(position_copy).getPurchaseName() + " borrada", Toast.LENGTH_LONG).show();
+                            mViewModel.deletePurchase(mPurchases.get(position_copy));
+                            mPurchases.remove(position_copy);
+                            notifyItemRemoved(position_copy);
                             //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
                         }
                     });
@@ -96,16 +98,14 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 } else {//Short click will take the user to the selected card purchases area
-                    Intent intent = new Intent(view.getContext(), CardActivity.class);
-                    intent.putExtra("cardName", mCards.get(position).getCardName());
-                    view.getContext().startActivity(intent);
+                    Toast.makeText(view.getContext(), mPurchases.get(position).getPurchaseName() + " HOLO", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
-    void setCards(List<Card> cards){
-        mCards = cards;
+    void setCards(List<Purchase> cards){
+        mPurchases = cards;
         notifyDataSetChanged();
     }
 
@@ -113,8 +113,8 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
     // mCards has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount(){
-        if(mCards != null)
-            return mCards.size();
+        if(mPurchases != null)
+            return mPurchases.size();
         else return 0;
     }
 }
