@@ -79,15 +79,15 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                     builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
-                    final int number = position; //This variable is to evade an error
+                    final int position_copy = position; //This variable is to evade an error
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mViewModel.deleteCard(mCards.get(number));
-                            mCards.remove(number);
-                            notifyItemRemoved(number);
-                            //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
+                            Toast.makeText(view.getContext(), mCards.get(position_copy).getCardName() + " borrada", Toast.LENGTH_LONG).show();
+                            mViewModel.deleteCard(mCards.get(position_copy));
+                            mCards.remove(position_copy);
+                            notifyItemRemoved(position_copy);
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
