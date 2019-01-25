@@ -1,5 +1,7 @@
 package com.apolongo.apolongo;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class CardActivity extends AppCompatActivity {
+    private ApolongoViewModel mApolongoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +18,11 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        String cardName = intent.getStringExtra("cardName");
+
+        mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

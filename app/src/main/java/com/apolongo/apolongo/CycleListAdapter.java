@@ -3,28 +3,25 @@ package com.apolongo.apolongo;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apolongo.apolongo.DB.Card;
+import com.apolongo.apolongo.DB.Purchase;
 
 import java.util.List;
 
-public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
+public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.CycleViewHolder> {
 
-    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private final TextView cardItemView;
+    class CycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        private final TextView cycleItemView;
         private ItemClickListener mItemClickListener;
 
-        private CardViewHolder(View itemView){
+        private CycleViewHolder(View itemView){
             super(itemView);
-            cardItemView = itemView.findViewById(R.id.textView);
+            cycleItemView = itemView.findViewById(R.id.textView);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -48,28 +45,28 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     }
 
     private final LayoutInflater mInflater;
-    private List<Card> mCards; //Cached copy of cards
+    private List<Purchase> mPurchases; //Cached copy of purchases
     private ApolongoViewModel mViewModel;
 
     //We use the viewmodel to remove a Card Later
-    CardListAdapter(Context context, ApolongoViewModel viewModel){
+    CycleListAdapter(Context context, ApolongoViewModel viewModel){
         mInflater = LayoutInflater.from(context);
         mViewModel = viewModel;
     }
 
     @Override
-    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public CycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new CardViewHolder(itemView);
+        return new CycleViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position){
-        if(mCards != null){
-            Card current = mCards.get(position);
-            holder.cardItemView.setText(current.getCardName());
+    public void onBindViewHolder(CycleViewHolder holder, int position){
+        if(mPurchases != null){
+            Purchase current = mPurchases.get(position);
+            holder.cycleItemView.setText(current.getPurchaseName());
         } else{
-            holder.cardItemView.setText("No name");
+            holder.cycleItemView.setText("No name");
         }
 
         //For every Item in the recycler list a OnClick listener is configured
@@ -78,13 +75,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             public void onClick(final View view, int position, boolean isLongClick) {
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
+                    builder.setTitle("Borrar compra " + mPurchases.get(position).getPurchaseName());
                     final int number = position; //This variable is to evade an error
                     builder.setMessage("Eliminará todas las compras relacionadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mViewModel.deleteCard(mCards.get(number));
+                            mViewModel.deletePurchase(mPurchases.get(number));
                             mCards.remove(number);
                             notifyItemRemoved(number);
                             //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
