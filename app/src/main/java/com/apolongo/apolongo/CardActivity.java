@@ -33,13 +33,12 @@ public class CardActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        String cardName = intent.getStringExtra("cardName");
-        mCardName = cardName;
+        mCardName = intent.getStringExtra("cardName");
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final CycleListAdapter adapter = new CycleListAdapter(this, mApolongoViewModel);
 
-        mApolongoViewModel.getAllPurchasess().observe(this, new Observer<List<Purchase>>() {
+        mApolongoViewModel.getPurchase(mCardName).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
                 //Update the cached copy of the purchases in the adapter

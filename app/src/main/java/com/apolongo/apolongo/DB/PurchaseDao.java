@@ -23,6 +23,6 @@ public interface PurchaseDao {
     LiveData<List<Purchase>> getAllPurchases();
 
     @Query("SELECT * FROM purchases_table WHERE purchase_CardName = :cardName")
-    List<Purchase> getPurchase(String cardName);
+    LiveData<List<Purchase>> getPurchase(String cardName);
 
 }

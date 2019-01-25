@@ -52,7 +52,7 @@ public class ApolongoRepository {
         new deletePurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
-    public List<Purchase> getPurchase(String cardName){
+    public LiveData<List<Purchase>> getPurchase(String cardName){
         return mPurchaseDao.getPurchase(cardName);
     }
 
