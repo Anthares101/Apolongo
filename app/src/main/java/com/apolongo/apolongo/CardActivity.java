@@ -23,6 +23,7 @@ import java.util.List;
 public class CardActivity extends AppCompatActivity {
     private ApolongoViewModel mApolongoViewModel;
     public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
+    private String mCardName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class CardActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String cardName = intent.getStringExtra("cardName");
+        mCardName = cardName;
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final CycleListAdapter adapter = new CycleListAdapter(this, mApolongoViewModel);
@@ -65,7 +67,11 @@ public class CardActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_PURCHASE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            Purchase purchase = new Purchase(data.getStringExtra(NewPurchaseActivity.EXTRA_REPLY), "image",1);
+            Purchase purchase = new Purchase(data.getStringExtra("name"),
+                                             data.getStringExtra("date"),
+                                             Float.parseFloat(data.getStringExtra("price")),
+                                            "No desc", //This will be as name, date and price
+                                             mCardName);
             mApolongoViewModel.insertPurchase(purchase);
         } else {
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
