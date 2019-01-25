@@ -8,6 +8,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
+import java.util.Date;
+
 @Entity(tableName = "purchases_table", indices = {@Index("purchase_CardName")}, //The index ignores a warning
         foreignKeys = @ForeignKey(entity = Card.class,
         parentColumns = "card_name",
@@ -22,7 +24,7 @@ public class Purchase {
     private String mPurchaseName;
     @NonNull
     @ColumnInfo(name = "purchase_date")
-    private String mPurchaseDate;
+    private Date mPurchaseDate;
     @NonNull
     @ColumnInfo(name = "purchase_price")
     private Float mPurchasePrice;
@@ -34,7 +36,7 @@ public class Purchase {
     private String mPurchaseCardName;
 
     //Constructor
-    public Purchase(@NonNull String mPurchaseName, @NonNull String mPurchaseDate,
+    public Purchase(@NonNull String mPurchaseName, @NonNull Date mPurchaseDate,
                     @NonNull Float mPurchasePrice, @NonNull String mPurchaseSDescp,
                     @NonNull String mPurchaseCardName){
         this.mPurchaseName = mPurchaseName;
@@ -45,7 +47,7 @@ public class Purchase {
     }
 
     //Getters
-    public String getPurchaseDate() {return mPurchaseDate;}
+    public Date getPurchaseDate() {return mPurchaseDate;}
     public String getPurchaseName(){return mPurchaseName;}
     public Float getPurchasePrice(){return mPurchasePrice;}
     public String getPurchaseSDescp() {return mPurchaseSDescp;}
@@ -53,7 +55,7 @@ public class Purchase {
 
     //Setters
     public void setPurchaseName(String PurchaseName) {this.mPurchaseName = PurchaseName;}
-    public void setPurchaseDate(String PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
+    public void setPurchaseDate(Date PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
     public void setPurchasePrice(Float PurchasePrice) {this.mPurchasePrice = PurchasePrice;}
     public void setPurchaseSDescp(String PurchaseDescp) {this.mPurchaseSDescp = PurchaseDescp;}
     public void setPurchaseCardName(String PurchaseCard) {this.mPurchaseCardName = PurchaseCard;}

@@ -41,6 +41,9 @@
         android:layout_marginBottom="@dimen/big_padding"
         android:layout_marginTop="@dimen/big_padding"
         android:textSize="18sp"
+        android:focusable="false"
+        android:clickable="true"
+        android:maxLines="1"
         />
 
     <Button

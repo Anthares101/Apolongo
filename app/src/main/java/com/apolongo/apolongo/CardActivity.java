@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,12 @@ import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Purchase;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CardActivity extends AppCompatActivity {
     private ApolongoViewModel mApolongoViewModel;
@@ -67,8 +71,17 @@ public class CardActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_PURCHASE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+            String string = data.getStringExtra("date");
+            DateFormat format = new SimpleDateFormat("MM / dd / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
+            Date date = null;
+            try {
+                date = format.parse(string);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             Purchase purchase = new Purchase(data.getStringExtra("name"),
-                                             data.getStringExtra("date"),
+                                             date,
                                              Float.parseFloat(data.getStringExtra("price")),
                                             "No desc", //This will be as name, date and price
                                              mCardName);
