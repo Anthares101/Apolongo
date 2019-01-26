@@ -56,6 +56,11 @@ public class ApolongoRepository {
         return mPurchaseDao.getPurchase(cardName);
     }
 
+    //This has to be reviewed
+    public Purchase getPurchaseByName(String PurchaseName){
+        return mPurchaseDao.getPurchaseByName(PurchaseName);
+    }
+
     //Async tasks
 
     //cards_table operations

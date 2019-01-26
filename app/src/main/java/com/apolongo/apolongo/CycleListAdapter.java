@@ -3,6 +3,7 @@ package com.apolongo.apolongo;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,8 +98,10 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                } else {//Short click will take the user to the selected card purchases area
-                    Toast.makeText(view.getContext(), mPurchases.get(position).getPurchaseName() + " HOLO", Toast.LENGTH_LONG).show();
+                } else {//Short click will take the user to the selected purchase info
+                    Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
+                    intent.putExtra("PurchaseName", mPurchases.get(position).getPurchaseName());
+                    view.getContext().startActivity(intent);
                 }
             }
         });

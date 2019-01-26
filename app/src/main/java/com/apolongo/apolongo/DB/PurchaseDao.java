@@ -25,4 +25,8 @@ public interface PurchaseDao {
     @Query("SELECT * FROM purchases_table WHERE purchase_CardName = :cardName ORDER BY purchase_date DESC")
     LiveData<List<Purchase>> getPurchase(String cardName);
 
+    //This has to be reviewed
+    @Query("SELECT * FROM purchases_table WHERE purchase_name = :PurchaseName")
+    Purchase getPurchaseByName(String PurchaseName);
+
 }

@@ -34,4 +34,7 @@ public class ApolongoViewModel extends AndroidViewModel {
     public void insertPurchase(Purchase purchase) { mRepository.insertPurchase(purchase); }
     public void deletePurchase(Purchase purchase) { mRepository.deletePurchase(purchase); }
     public LiveData<List<Purchase>> getPurchase(String cardName){return mRepository.getPurchase(cardName);}
+
+    //This has to be reviewed
+    public Purchase getPurchaseByName(String PurchaseName){return mRepository.getPurchaseByName(PurchaseName);}
 }
