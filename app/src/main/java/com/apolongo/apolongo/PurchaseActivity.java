@@ -32,7 +32,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 
-        //mPurchase = mApolongoViewModel.getPurchaseByName(mPurchaseName); //It breaks here
+        mPurchase = mApolongoViewModel.getPurchaseById(mPurchaseId); //It breaks here
 
 
         //mNameEditable = findViewById(R.id.NameEditable);

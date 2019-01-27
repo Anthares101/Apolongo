@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Purchase;
 
+import java.io.PrintStream;
 import java.util.List;
 
 public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseViewHolder> {
@@ -100,7 +101,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     dialog.show();
                 } else {//Short click will take the user to the selected purchase info
                     Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
-                    intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
+                    intent.putExtra("PurchaseId", Integer.toString(mPurchases.get(position).getPurchaseId()));
                     view.getContext().startActivity(intent);
                 }
             }
