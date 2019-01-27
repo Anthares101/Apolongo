@@ -20,7 +20,7 @@ public class PurchaseActivity extends AppCompatActivity {
     private TextView mNameEditable;
     private Purchase mPurchase;
     private ApolongoViewModel mApolongoViewModel;
-    private String mPurchaseName;
+    private int mPurchaseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class PurchaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_purchase);
 
         Intent intent = getIntent();
-        mPurchaseName = intent.getStringExtra("PurchaseName");
+        mPurchaseId = Integer.parseInt(intent.getStringExtra("PurchaseId"));
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 

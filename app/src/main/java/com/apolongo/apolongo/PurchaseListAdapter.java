@@ -15,15 +15,15 @@ import com.apolongo.apolongo.DB.Purchase;
 
 import java.util.List;
 
-public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.CycleViewHolder> {
+public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseViewHolder> {
 
-    class CycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private final TextView cycleItemView;
+    class PurchaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        private final TextView mPurchaseItemView;
         private ItemClickListener mItemClickListener;
 
-        private CycleViewHolder(View itemView){
+        private PurchaseViewHolder(View itemView){
             super(itemView);
-            cycleItemView = itemView.findViewById(R.id.textView);
+            mPurchaseItemView = itemView.findViewById(R.id.textView);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -51,24 +51,24 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
     private ApolongoViewModel mViewModel;
 
     //We use the viewmodel to remove a Card Later
-    CycleListAdapter(Context context, ApolongoViewModel viewModel){
+    PurchaseListAdapter(Context context, ApolongoViewModel viewModel){
         mInflater = LayoutInflater.from(context);
         mViewModel = viewModel;
     }
 
     @Override
-    public CycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public PurchaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new CycleViewHolder(itemView);
+        return new PurchaseViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CycleViewHolder holder, int position){
+    public void onBindViewHolder(PurchaseViewHolder holder, int position){
         if(mPurchases != null){
             Purchase current = mPurchases.get(position);
-            holder.cycleItemView.setText(current.getPurchaseName());
+            holder.mPurchaseItemView.setText(current.getPurchaseName());
         } else{
-            holder.cycleItemView.setText("No name");
+            holder.mPurchaseItemView.setText("No name");
         }
 
         //For every Item in the recycler list a OnClick listener is configured
@@ -100,7 +100,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                     dialog.show();
                 } else {//Short click will take the user to the selected purchase info
                     Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
-                    intent.putExtra("PurchaseName", mPurchases.get(position).getPurchaseName());
+                    intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
                     view.getContext().startActivity(intent);
                 }
             }

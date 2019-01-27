@@ -6,7 +6,7 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-import android.text.format.DateFormat;
+import android.support.annotation.Nullable;
 
 import java.util.Date;
 
@@ -18,7 +18,10 @@ import java.util.Date;
 public class Purchase {
     
     //Private attributes declaration
-    @PrimaryKey
+    @NonNull
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "purchase_id")
+    private int mPurchaseId;
     @NonNull
     @ColumnInfo(name = "purchase_name")
     private String mPurchaseName;
@@ -28,7 +31,7 @@ public class Purchase {
     @NonNull
     @ColumnInfo(name = "purchase_price")
     private Float mPurchasePrice;
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "purchase_sdescp")
     private String mPurchaseSDescp; //Short description of the purchase
     @NonNull
@@ -37,8 +40,9 @@ public class Purchase {
 
     //Constructor
     public Purchase(@NonNull String mPurchaseName, @NonNull Date mPurchaseDate,
-                    @NonNull Float mPurchasePrice, @NonNull String mPurchaseSDescp,
+                    @NonNull Float mPurchasePrice, @Nullable String mPurchaseSDescp,
                     @NonNull String mPurchaseCardName){
+        this.mPurchaseId = 0;
         this.mPurchaseName = mPurchaseName;
         this.mPurchaseDate = mPurchaseDate;
         this.mPurchasePrice = mPurchasePrice;
@@ -47,6 +51,7 @@ public class Purchase {
     }
 
     //Getters
+    public int getPurchaseId() {return mPurchaseId;}
     public Date getPurchaseDate() {return mPurchaseDate;}
     public String getPurchaseName(){return mPurchaseName;}
     public Float getPurchasePrice(){return mPurchasePrice;}
@@ -54,6 +59,7 @@ public class Purchase {
     public String getPurchaseCardName() {return mPurchaseCardName;}
 
     //Setters
+    public void setPurchaseId(int PurchaseId) {this.mPurchaseId = PurchaseId;}
     public void setPurchaseName(String PurchaseName) {this.mPurchaseName = PurchaseName;}
     public void setPurchaseDate(Date PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
     public void setPurchasePrice(Float PurchasePrice) {this.mPurchasePrice = PurchasePrice;}

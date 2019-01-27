@@ -8,7 +8,7 @@ import android.content.Context;
 
 import com.apolongo.apolongo.DB.Converters.Converters;
 
-@Database(entities = {Card.class, Purchase.class}, version = 2)
+@Database(entities = {Card.class, Purchase.class}, version = 5)
 @TypeConverters({Converters.class})
 public abstract class ApolongoDB extends RoomDatabase {
     public abstract CardDao cardDao();

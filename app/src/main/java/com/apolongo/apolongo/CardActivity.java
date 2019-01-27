@@ -40,7 +40,7 @@ public class CardActivity extends AppCompatActivity {
         mCardName = intent.getStringExtra("cardName");
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
-        final CycleListAdapter adapter = new CycleListAdapter(this, mApolongoViewModel);
+        final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
 
         mApolongoViewModel.getPurchase(mCardName).observe(this, new Observer<List<Purchase>>() {
             @Override
