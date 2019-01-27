@@ -75,7 +75,17 @@ public class ApolongoRepository {
     }
 
     public Purchase getPurchaseById(int purchaseId){
-        return mPurchaseDao.getPurchaseById(purchaseId);
+        AsyncTask<Integer, Void, Void> asyncTask = new getPurchaseByIdAsyncTask(mPurchaseDao);
+        asyncTask.execute(purchaseId);
+
+        try {
+            asyncTask.get();
+        }catch (InterruptedException | ExecutionException e){
+            System.err.println("Uncaught exception is detected! " + e
+                    + " st: " + Arrays.toString(e.getStackTrace()));
+        }
+
+        return getPurchaseByIdAsyncTask.mpurchase;
     }
 
     //Async tasks
@@ -123,6 +133,19 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final String... params) {
             cardCount = mAsyncTaskDao.alreadyExist(params[0]);
+            return null;
+        }
+    }
+
+    private static class getPurchaseByIdAsyncTask extends AsyncTask<Integer, Void, Void>{
+        private PurchaseDao mAsyncTaskDao;
+        static Purchase mpurchase;
+
+        getPurchaseByIdAsyncTask(PurchaseDao dao){mAsyncTaskDao = dao;}
+
+        @Override
+        protected Void doInBackground(final Integer... params){
+            mpurchase = mAsyncTaskDao.getPurchaseById(params[0]);
             return null;
         }
     }
