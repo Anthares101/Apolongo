@@ -21,4 +21,10 @@ public interface CardDao {
 
     @Query("SELECT * from cards_table ORDER BY card_name ASC")
     LiveData<List<Card>> getAllCards();
+
+    @Query("SELECT * from cards_table WHERE card_name = :cardName")
+    Card getCardByName(String cardName);
+
+    @Query("SELECT COUNT(card_name) FROM cards_table WHERE card_name=:cardName")
+    int alreadyExist(String cardName);
 }

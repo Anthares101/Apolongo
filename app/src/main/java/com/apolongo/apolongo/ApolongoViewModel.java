@@ -28,6 +28,8 @@ public class ApolongoViewModel extends AndroidViewModel {
     LiveData<List<Card>> getAllCards() { return mAllCards; }
     public void insertCard(Card card) { mRepository.insertCard(card); }
     public void deleteCard(Card card) { mRepository.deleteCard(card); }
+    public Card getCardByName(String cardName) {return mRepository.getCardByName(cardName);}
+    public int alreadyExist(String cardName) {return mRepository.alreadyExist(cardName);}
 
     //Purchases operations
     LiveData<List<Purchase>> getAllPurchasess() { return mAllPurchases; }

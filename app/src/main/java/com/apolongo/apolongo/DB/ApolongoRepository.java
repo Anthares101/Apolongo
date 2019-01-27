@@ -4,7 +4,9 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ApolongoRepository {
     //cards_table
@@ -37,6 +39,22 @@ public class ApolongoRepository {
 
     public void deleteCard (Card card){
         new deleteCardAsyncTask(mCardDao).execute(card);
+    }
+
+    public Card getCardByName(String cardName) {return mCardDao.getCardByName(cardName);}
+
+    public int alreadyExist(String cardName) {
+        AsyncTask<String, Void, Void> asyncTask = new alreadyExistAsyncTask(mCardDao);
+        asyncTask.execute(cardName);
+
+        try {
+            asyncTask.get();
+        }catch (InterruptedException | ExecutionException e){
+            System.err.println("Uncaught exception is detected! " + e
+                    + " st: " + Arrays.toString(e.getStackTrace()));
+        }
+
+        return alreadyExistAsyncTask.cardCount;
     }
 
     //purchases_table operations
@@ -89,6 +107,22 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final Card... params) {
             mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    private static class alreadyExistAsyncTask extends AsyncTask<String, Void, Void> {
+
+        private CardDao mAsyncTaskDao;
+        static int cardCount;
+
+        alreadyExistAsyncTask(CardDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            cardCount = mAsyncTaskDao.alreadyExist(params[0]);
             return null;
         }
     }
