@@ -1,5 +1,6 @@
 package com.apolongo.apolongo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -99,8 +100,12 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     dialog.show();
                 } else {//Short click will take the user to the selected purchase info
                     Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
-                    intent.putExtra("PurchaseId", Integer.toString(mPurchases.get(position).getPurchaseId()));
-                    view.getContext().startActivity(intent);
+                    intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
+                    intent.putExtra("PurchaseName",mPurchases.get(position).getPurchaseName());
+                    intent.putExtra("PurchasePrice", mPurchases.get(position).getPurchasePrice());
+                    intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
+                    intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
+                    ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
                 }
             }
         });

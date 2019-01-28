@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="hint_word">Nombre tarjeta...</string>
     <string name="button_save">Guardar</string>
+    <string name="saved">Cambios guardados</string>
     <string name="empty_not_saved">No guardado</string>
     <string name="alreadyExist_not_saved">El nombre ya existe</string>
     <string name="cycle_not_valid">Introduzca un dia válido</string>

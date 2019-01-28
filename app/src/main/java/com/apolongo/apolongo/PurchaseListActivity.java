@@ -31,6 +31,7 @@ public class PurchaseListActivity extends AppCompatActivity {
     private Date mFinishDate;
     private String mCardName;
     public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
+    public static final int UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,24 +75,53 @@ public class PurchaseListActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == NEW_PURCHASE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            String string = data.getStringExtra("date");
-            DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
-            Date date = null;
-            try {
-                date = format.parse(string);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        switch (requestCode){
+            case NEW_PURCHASE_ACTIVITY_REQUEST_CODE:
+                if (resultCode == RESULT_OK){
+                    String string = data.getStringExtra("date");
+                    DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
+                    Date date = null;
+                    try {
+                        date = format.parse(string);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-            Purchase purchase = new Purchase(data.getStringExtra("name"),
-                    date,
-                    Float.parseFloat(data.getStringExtra("price")),
-                    "No desc", //This will be as name, date and price
-                    mCardName);
-            mApolongoViewModel.insertPurchase(purchase);
-        } else {
-            Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+                    Purchase purchase = new Purchase(data.getStringExtra("name"),
+                            date,
+                            Float.parseFloat(data.getStringExtra("price")),
+                            "No desc", //This will be as name, date and price
+                            mCardName);
+                    mApolongoViewModel.insertPurchase(purchase);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+                }
+
+                break;
+            case UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE:
+                if (resultCode == RESULT_OK){
+                    DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+
+                    //Get the data from PurchaseActivity
+                    int purchaseId = data.getIntExtra("purchaseId", 0);
+                    String purchaseName = data.getStringExtra("purchaseName");
+                    Date purchaseDate = null;
+                    try {
+                        purchaseDate = format.parse(data.getStringExtra("purchaseDate"));
+                    }catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    float purchasePrice = Float.parseFloat(data.getStringExtra("purchasePrice"));
+                    String purchaseDesc = data.getStringExtra("purchaseDesc");
+
+                    //Update the purchase in the database
+                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                    purchase.setPurchaseId(purchaseId);
+                    mApolongoViewModel.updatePurchase(purchase);
+
+                    Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 

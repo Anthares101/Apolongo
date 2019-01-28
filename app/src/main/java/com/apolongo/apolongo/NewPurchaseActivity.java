@@ -14,8 +14,6 @@ import com.apolongo.apolongo.Fragments.DatePickerFragment;
 
 public class NewPurchaseActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.apolongo.android.purchaselistsql.REPLY";
-
     private EditText mEditPurchaseName;
     private EditText mEditPurchasePrice;
     private EditText mEditPurchaseDate;
@@ -68,7 +66,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
                     replyIntent.putExtra("date", purchaseDate);
                     replyIntent.putExtra("price", purchasePrice);
                     setResult(RESULT_OK, replyIntent);
-                    //It goes back to MainActivity
+                    //It goes back to PurchaseListActivity
                     finish();
                 }
             }

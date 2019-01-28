@@ -67,6 +67,10 @@ public class ApolongoRepository {
         new insertPurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
+    public void updatePurchase(Purchase purchase){
+        new updatePurchaseAsyncTask(mPurchaseDao).execute(purchase);
+    }
+
     public void deletePurchase (Purchase purchase){
         new deletePurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
@@ -171,6 +175,21 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final Purchase... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updatePurchaseAsyncTask extends AsyncTask<Purchase, Void, Void> {
+
+        private PurchaseDao mAsyncTaskDao;
+
+        updatePurchaseAsyncTask(PurchaseDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Purchase... params) {
+            mAsyncTaskDao.update(params[0]);
             return null;
         }
     }
