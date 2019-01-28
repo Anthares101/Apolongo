@@ -5,5 +5,7 @@
     <string name="button_save">Guardar</string>
     <string name="empty_not_saved">No guardado</string>
     <string name="alreadyExist_not_saved">El nombre ya existe</string>
-    <string name="title_activity_card">Compras</string>
+    <string name="cycle_not_valid">Introduzca un dia válido</string>
+    <string name="title_activity_cycle_list">Ciclos</string>
+    <string name="title_activity_purchase_list">Compras</string>
 </resources>

@@ -12,9 +12,8 @@ import android.widget.Toast;
 
 public class NewCardActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.apolongo.android.cardlistsql.REPLY";
-
     private EditText mEditCardView;
+    private EditText mEditCardCycle;
     private ApolongoViewModel mApolongoViewModel;
 
     @Override
@@ -23,6 +22,7 @@ public class NewCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
         mEditCardView = findViewById(R.id.edit_card);
+        mEditCardCycle = findViewById(R.id.edit_billing_cycle);
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 
         final Button button = findViewById((R.id.button_save));
@@ -30,17 +30,26 @@ public class NewCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(mEditCardView.getText())){
+                if (TextUtils.isEmpty(mEditCardView.getText()) || TextUtils.isEmpty(mEditCardCycle.getText())){
                     setResult(RESULT_CANCELED, replyIntent);
                 }
                 else{
                     String cardName = mEditCardView.getText().toString();
+                    int cycle = Integer.parseInt(mEditCardCycle.getText().toString());
+
                     int number = mApolongoViewModel.alreadyExist(cardName);
                     if(number == 0) {
-                        replyIntent.putExtra(EXTRA_REPLY, cardName);
-                        setResult(RESULT_OK, replyIntent);
-                        //It goes back to MainActivity
-                        finish();
+                        if(cycle <= 0 || cycle > 31){
+                            setResult(RESULT_CANCELED, replyIntent);
+                            Toast.makeText(getApplicationContext(), R.string.cycle_not_valid, Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            replyIntent.putExtra("cardName", cardName);
+                            replyIntent.putExtra("cycle", cycle);
+                            setResult(RESULT_OK, replyIntent);
+                            //It goes back to MainActivity
+                            finish();
+                        }
                     }
                     else {
                         setResult(RESULT_CANCELED, replyIntent);

@@ -11,19 +11,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apolongo.apolongo.DB.Card;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
-
-    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private final TextView cardItemView;
+public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.CycleViewHolder> {
+    class CycleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        private final TextView mCycleItemView;
         private ItemClickListener mItemClickListener;
 
-        private CardViewHolder(View itemView){
+        private CycleViewHolder(View itemView){
             super(itemView);
-            cardItemView = itemView.findViewById(R.id.textView);
+            mCycleItemView = itemView.findViewById(R.id.textView);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
@@ -47,28 +47,30 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     }
 
     private final LayoutInflater mInflater;
-    private List<Card> mCards; //Cached copy of cards
+    private List<Cycle> mCycles; //Cached copy of cycles
     private ApolongoViewModel mViewModel;
 
     //We use the viewmodel to remove a Card Later
-    CardListAdapter(Context context, ApolongoViewModel viewModel){
+    CycleListAdapter(Context context, ApolongoViewModel viewModel){
         mInflater = LayoutInflater.from(context);
         mViewModel = viewModel;
     }
 
     @Override
-    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public CycleViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View itemView = mInflater.inflate(R.layout.recyclerview_item, parent, false);
-        return new CardViewHolder(itemView);
+        return new CycleViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position){
-        if(mCards != null){
-            Card current = mCards.get(position);
-            holder.cardItemView.setText(current.getCardName());
+    public void onBindViewHolder(CycleViewHolder holder, int position){
+        if(mCycles != null){
+            Cycle current = mCycles.get(position);
+            DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+            String message = format.format(current.getStart()) + " - " + format.format(current.getFinish());
+            holder.mCycleItemView.setText(message);
         } else{
-            holder.cardItemView.setText("No name");
+            holder.mCycleItemView.setText("No name");
         }
 
         //For every Item in the recycler list a OnClick listener is configured
@@ -77,15 +79,17 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             public void onClick(final View view, int position, boolean isLongClick) {
                 if (isLongClick) {//Long click will allow user to delete a card
                     final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
+                    builder.setTitle("Borrar ciclo seleccionado");
                     final int position_copy = position; //This variable is to evade an error
-                    builder.setMessage("Eliminará todas las compras relacionadas");
+                    builder.setMessage("Eliminará definitivamente este ciclo y compras asociadas");
                     builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(view.getContext(), mCards.get(position_copy).getCardName() + " borrada", Toast.LENGTH_LONG).show();
-                            mViewModel.deleteCard(mCards.get(position_copy));
+                            mViewModel.deletePurchasesFromCycle(mCycles.get(position_copy).getStart(),
+                                                                mCycles.get(position_copy).getFinish(),
+                                                                mCycles.get(position_copy).getCardName());
                             notifyItemRemoved(position_copy);
+                            Toast.makeText(view.getContext(), " Borrada", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -96,18 +100,19 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                } else {//Short click will take the user to the selected card purchases area
-                    Intent intent = new Intent(view.getContext(), CycleListActivity.class);
-                    intent.putExtra("cardName", mCards.get(position).getCardName());
-                    intent.putExtra("cardCycle", mCards.get(position).getBillingCycle());
+                } else {//Short click will take the user to the selected purchase info
+                    Intent intent = new Intent(view.getContext(), PurchaseListActivity.class);
+                    intent.putExtra("startDate", mCycles.get(position).getStart());
+                    intent.putExtra("finishDate", mCycles.get(position).getFinish());
+                    intent.putExtra("cardName", mCycles.get(position).getCardName());
                     view.getContext().startActivity(intent);
                 }
             }
         });
     }
 
-    void setCards(List<Card> cards){
-        mCards = cards;
+    void setCycles(List<Cycle> cycles){
+        mCycles = cycles;
         notifyDataSetChanged();
     }
 
@@ -115,8 +120,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     // mCards has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount(){
-        if(mCards != null)
-            return mCards.size();
+        if(mCycles != null)
+            return mCycles.size();
         else return 0;
     }
+
 }

@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PurchaseActivity"></activity>
         <activity
-            android:name=".CardActivity"
-            android:label="@string/title_activity_card"
+            android:name=".PurchaseListActivity"
+            android:label="@string/title_activity_purchase_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".PurchaseActivity" />
+        <activity
+            android:name=".CycleListActivity"
+            android:label="@string/title_activity_cycle_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".NewCardActivity" />
         <activity android:name=".NewPurchaseActivity" />

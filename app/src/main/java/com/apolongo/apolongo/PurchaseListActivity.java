@@ -24,25 +24,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class CardActivity extends AppCompatActivity {
+public class PurchaseListActivity extends AppCompatActivity {
+
     private ApolongoViewModel mApolongoViewModel;
-    public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
+    private Date mStartDate;
+    private Date mFinishDate;
     private String mCardName;
+    public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card);
+        setContentView(R.layout.activity_purchase_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        Intent intent = getIntent();
-        mCardName = intent.getStringExtra("cardName");
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
 
-        mApolongoViewModel.getPurchase(mCardName).observe(this, new Observer<List<Purchase>>() {
+        Intent intent = getIntent();
+        mStartDate = (Date)intent.getSerializableExtra("startDate");
+        mFinishDate = (Date)intent.getSerializableExtra("finishDate");
+        mCardName = intent.getStringExtra("cardName");
+
+        mApolongoViewModel.getPurchasesFromCycle(mStartDate, mFinishDate, mCardName).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
                 //Update the cached copy of the purchases in the adapter
@@ -53,11 +58,10 @@ public class CardActivity extends AppCompatActivity {
         //Add RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setAdapter(adapter);
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        FloatingActionButton newPurchaseButton = (FloatingActionButton) findViewById(R.id.newPurchaseButton);
-        newPurchaseButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.newPurchaseButton);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent NewPurchase = new Intent(getApplicationContext(), NewPurchaseActivity.class);
@@ -66,13 +70,13 @@ public class CardActivity extends AppCompatActivity {
         });
     }
 
-    //NewCardActivity Result observer
+    //NewPurchaseActivity Result observer
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_PURCHASE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
             String string = data.getStringExtra("date");
-            DateFormat format = new SimpleDateFormat("MM / dd / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
+            DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
             Date date = null;
             try {
                 date = format.parse(string);
@@ -81,10 +85,10 @@ public class CardActivity extends AppCompatActivity {
             }
 
             Purchase purchase = new Purchase(data.getStringExtra("name"),
-                                             date,
-                                             Float.parseFloat(data.getStringExtra("price")),
-                                            "No desc", //This will be as name, date and price
-                                             mCardName);
+                    date,
+                    Float.parseFloat(data.getStringExtra("price")),
+                    "No desc", //This will be as name, date and price
+                    mCardName);
             mApolongoViewModel.insertPurchase(purchase);
         } else {
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
@@ -112,4 +116,5 @@ public class CardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

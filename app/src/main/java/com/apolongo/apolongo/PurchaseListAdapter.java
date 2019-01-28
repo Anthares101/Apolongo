@@ -85,9 +85,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(view.getContext(), mPurchases.get(position_copy).getPurchaseName() + " borrada", Toast.LENGTH_LONG).show();
                             mViewModel.deletePurchase(mPurchases.get(position_copy));
-                            mPurchases.remove(position_copy);
                             notifyItemRemoved(position_copy);
-                            //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
