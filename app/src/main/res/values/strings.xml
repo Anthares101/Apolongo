@@ -9,4 +9,8 @@
     <string name="cycle_not_valid">Introduzca un dia válido</string>
     <string name="title_activity_cycle_list">Ciclos</string>
     <string name="title_activity_purchase_list">Compras</string>
+    <string name="tittle_activity_NewPurchase">"Añadir Compra"</string>
+    <string name="tittle_activity_NewCard">"Añadir Tarjeta"</string>
+    <string name="tittle_activity_Purchase">"Información"</string>
+    <string name="tittle_activity_MainActivity">"Tarjetas"</string>
 </resources>
