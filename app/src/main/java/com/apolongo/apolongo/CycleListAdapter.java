@@ -11,8 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apolongo.apolongo.Auxiliar.MonthConverter;
+
 import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,8 +71,18 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
         if(mCycles != null){
             Cycle current = mCycles.get(position);
             DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
-            String message = format.format(current.getStart()) + " - " + format.format(current.getFinish());
-            holder.mCycleItemView.setText(message);
+
+            String[] dateStart = format.format(current.getStart()).split("/");
+            String[] dateEnd = format.format(current.getFinish()).split("/");
+
+            String month = MonthConverter.getStringMonth(Integer.parseInt(dateEnd[1].replaceAll(" ", "")));
+            String year = dateEnd[2].replaceAll(" ", "");
+            float total = mViewModel.getTotalPriceFromCycle(current.getStart(), current.getFinish(), current.getCardName());
+
+            String content = month + " " + year + "\nTotal: " + Float.toString(total) + "€";
+            //String content = format.format(current.getStart()) + " - " + format.format(current.getFinish()); //Just if cycles have to be checked the code is kept here
+
+            holder.mCycleItemView.setText(content);
         } else{
             holder.mCycleItemView.setText("No name");
         }

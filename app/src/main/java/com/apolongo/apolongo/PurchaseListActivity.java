@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Purchase;
@@ -27,6 +28,7 @@ import java.util.Locale;
 public class PurchaseListActivity extends AppCompatActivity {
 
     private ApolongoViewModel mApolongoViewModel;
+    private TextView mTotalPrice;
     private Date mStartDate;
     private Date mFinishDate;
     private String mCardName;
@@ -42,6 +44,7 @@ public class PurchaseListActivity extends AppCompatActivity {
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
+        mTotalPrice = findViewById(R.id.total_purchase_value);
 
         Intent intent = getIntent();
         mStartDate = (Date)intent.getSerializableExtra("startDate");
@@ -51,6 +54,11 @@ public class PurchaseListActivity extends AppCompatActivity {
         mApolongoViewModel.getPurchasesFromCycle(mStartDate, mFinishDate, mCardName).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
+                //Set the total purchases value
+                String totalValue = Float.toString(mApolongoViewModel.getTotalPriceFromCycle(mStartDate, mFinishDate, mCardName));
+                String content = "Total " + totalValue + "€";
+                mTotalPrice.setText(content);
+
                 //Update the cached copy of the purchases in the adapter
                 adapter.setPurchases(purchases);
             }

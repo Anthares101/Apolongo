@@ -68,7 +68,8 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
     public void onBindViewHolder(PurchaseViewHolder holder, int position){
         if(mPurchases != null){
             Purchase current = mPurchases.get(position);
-            holder.mPurchaseItemView.setText(current.getPurchaseName());
+            String content = current.getPurchaseName() + "\nPrecio: " + current.getPurchasePrice() + "€";
+            holder.mPurchaseItemView.setText(content);
         } else{
             holder.mPurchaseItemView.setText("No name");
         }

@@ -40,4 +40,7 @@ public interface PurchaseDao {
 
     @Query("SELECT * FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_CardName = :cardName")
     LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, String cardName);
+
+    @Query("SELECT SUM(purchase_price) FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_CardName = :cardName")
+    float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName);
 }

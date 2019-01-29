@@ -101,6 +101,20 @@ public class ApolongoRepository {
         return mPurchaseDao.getPurchasesFromCycle(startDate, finishDate, cardName);
     }
 
+    public float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName){
+        AsyncTask<Date, Date, Void> asyncTask = new getTotalPriceFromCycleAsyncTask(mPurchaseDao, cardName);
+        asyncTask.execute(startDate, finishDate);
+
+        try {
+            asyncTask.get();
+        }catch (InterruptedException | ExecutionException e){
+            System.err.println("Uncaught exception is detected! " + e
+                    + " st: " + Arrays.toString(e.getStackTrace()));
+        }
+
+        return getTotalPriceFromCycleAsyncTask.mTotal;
+    }
+
     //Async tasks
 
     //cards_table operations
@@ -222,6 +236,23 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final Date... params) {
             mAsyncTaskDao.deletePurchasesFromCycle(params[0], params[1], mCardName);
+            return null;
+        }
+    }
+
+    private static class getTotalPriceFromCycleAsyncTask extends AsyncTask<Date, Date, Void> {
+        private PurchaseDao mAsyncTaskDao;
+        private String mCardName;
+        static float mTotal;
+
+        getTotalPriceFromCycleAsyncTask(PurchaseDao dao, String cardName) {
+            mAsyncTaskDao = dao;
+            mCardName = cardName;
+        }
+
+        @Override
+        protected Void doInBackground(final Date... params) {
+            mTotal = mAsyncTaskDao.getTotalPriceFromCycle(params[0], params[1], mCardName);
             return null;
         }
     }
