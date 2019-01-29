@@ -154,21 +154,24 @@ public class CycleListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_PURCHASE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            String string = data.getStringExtra("date");
-            DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH); //Pattern MUST be controlled in the activity_new_purchase
-            Date date = null;
+            DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+
+            //Get the data from activity
+            String purchaseName = data.getStringExtra("purchaseName");
+            Date purchaseDate = null;
             try {
-                date = format.parse(string);
-            } catch (ParseException e) {
+                purchaseDate = format.parse(data.getStringExtra("purchaseDate"));
+            }catch (ParseException e) {
                 e.printStackTrace();
             }
+            float purchasePrice = Float.parseFloat(data.getStringExtra("purchasePrice"));
+            String purchaseDesc = data.getStringExtra("purchaseDesc");
 
-            Purchase purchase = new Purchase(data.getStringExtra("name"),
-                                             date,
-                                             Float.parseFloat(data.getStringExtra("price")),
-                                            "No desc", //This will be as name, date and price
-                                             mCardName);
+            //Insert the purchase in the database
+            Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
             mApolongoViewModel.insertPurchase(purchase);
+
+            Toast.makeText(getApplicationContext(), R.string.button_save, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
         }

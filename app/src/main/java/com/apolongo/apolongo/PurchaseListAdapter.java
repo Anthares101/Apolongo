@@ -105,6 +105,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     intent.putExtra("PurchaseName",mPurchases.get(position).getPurchaseName());
                     intent.putExtra("PurchasePrice", mPurchases.get(position).getPurchasePrice());
                     intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
+                    intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
                     intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
                     ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
                 }

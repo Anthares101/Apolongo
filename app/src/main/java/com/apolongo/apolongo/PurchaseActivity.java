@@ -31,6 +31,7 @@ public class PurchaseActivity extends AppCompatActivity {
     private EditText mEditPurchaseName;
     private EditText mEditPurchasePrice;
     private EditText mEditPurchaseDate;
+    private EditText mEditPurchaseDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +44,10 @@ public class PurchaseActivity extends AppCompatActivity {
         String purchaseName = intent.getStringExtra("PurchaseName");
         float purchasePrice = intent.getFloatExtra("PurchasePrice", 0);
         Date purchaseDate = (Date)intent.getSerializableExtra("PurchaseDate");
+        String purchaseDesc = intent.getStringExtra("PurchaseDesc");
         String purchaseCardName = intent.getStringExtra("PurchaseCardName");
 
-        mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, "No Desc", purchaseCardName);
+        mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, purchaseCardName);
         mPurchase.setPurchaseId(purchaseId);
 
         DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
@@ -58,6 +60,9 @@ public class PurchaseActivity extends AppCompatActivity {
 
         mEditPurchaseDate = findViewById(R.id.edit_purchase_date);
         mEditPurchaseDate.setText(format.format(mPurchase.getPurchaseDate()));
+
+        mEditPurchaseDesc = findViewById(R.id.edit_purchase_desc);
+        mEditPurchaseDesc.setText(mPurchase.getPurchaseSDescp());
 
         mEditPurchaseDate.setOnClickListener(new View.OnClickListener() {
             private void showDatePickerDialog() {
@@ -95,11 +100,13 @@ public class PurchaseActivity extends AppCompatActivity {
                     String purchaseName = mEditPurchaseName.getText().toString();
                     String purchaseDate = mEditPurchaseDate.getText().toString();
                     String purchasePrice = mEditPurchasePrice.getText().toString();
+                    String purchaseDesc = mEditPurchaseDesc.getText().toString();
 
                     //No changes detected
                     if(purchaseName.equals(mPurchase.getPurchaseName()) &&
                             purchaseDate.equals(format.format(mPurchase.getPurchaseDate())) &&
-                            purchasePrice.equals(Float.toString(mPurchase.getPurchasePrice()))){
+                            purchasePrice.equals(Float.toString(mPurchase.getPurchasePrice())) &&
+                            purchaseDesc.equals(mPurchase.getPurchaseSDescp())){
 
                         setResult(RESULT_CANCELED, replyIntent);
                     }
@@ -108,7 +115,7 @@ public class PurchaseActivity extends AppCompatActivity {
                         replyIntent.putExtra("purchaseName", purchaseName);
                         replyIntent.putExtra("purchaseDate", purchaseDate);
                         replyIntent.putExtra("purchasePrice", purchasePrice);
-                        replyIntent.putExtra("purchaseDesc", "No Desc");
+                        replyIntent.putExtra("purchaseDesc", purchaseDesc);
                         setResult(RESULT_OK, replyIntent);
                     }
                     //It goes back to PurchaseListActivity

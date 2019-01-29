@@ -12,7 +12,7 @@
         android:layout_marginBottom="@dimen/big_padding"
         android:fontFamily="sans-serif-light"
         android:hint="@string/hint_word"
-        android:inputType="textAutoComplete"
+        android:inputType="text"
         android:padding="@dimen/small_padding"
         android:textSize="18sp" />
 
