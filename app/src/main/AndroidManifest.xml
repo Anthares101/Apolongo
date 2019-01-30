@@ -13,7 +13,10 @@
             android:name=".PurchaseListActivity"
             android:label="@string/title_activity_purchase_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".PurchaseActivity" android:label="@string/tittle_activity_Purchase"/>
+        <activity
+            android:name=".PurchaseActivity"
+            android:label="@string/tittle_activity_Purchase"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CycleListActivity"
             android:label="@string/title_activity_cycle_list"

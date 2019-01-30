@@ -2,48 +2,53 @@ package com.apolongo.apolongo;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-        import android.widget.TextSwitcher;
-        import android.widget.TextView;
-import android.widget.Toast;
 
-import com.apolongo.apolongo.DB.Card;
 import com.apolongo.apolongo.DB.Purchase;
 import com.apolongo.apolongo.Fragments.DatePickerFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class PurchaseActivity extends AppCompatActivity {
 
-    private Purchase mPurchase;
     private EditText mEditPurchaseName;
     private EditText mEditPurchasePrice;
     private EditText mEditPurchaseDate;
     private EditText mEditPurchaseDesc;
+
+    private Purchase mPurchase;
+    //Cycle dates are used for the return action
+    private Date mStartDate;
+    private Date mFinishDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase);
 
-        //Initializes a Purchase object
+        //Initializes the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Intent intent = getIntent();
-        
+        mStartDate  = (Date)intent.getSerializableExtra("StartDate");
+        mFinishDate  = (Date)intent.getSerializableExtra("FinishDate");
+
+        //Initializes a Purchase object
         int purchaseId = intent.getIntExtra("PurchaseId", 0);
         String purchaseName = intent.getStringExtra("PurchaseName");
         float purchasePrice = intent.getFloatExtra("PurchasePrice", 0);
@@ -53,6 +58,22 @@ public class PurchaseActivity extends AppCompatActivity {
 
         mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, purchaseCardName);
         mPurchase.setPurchaseId(purchaseId);
+
+        //Add a back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PurchaseListActivity.class);
+
+                intent.putExtra("startDate", mStartDate);
+                intent.putExtra("finishDate", mFinishDate);
+                intent.putExtra("cardName", mPurchase.getPurchaseCardName());
+
+                startActivity(intent);
+            }
+        });
 
         DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
 
@@ -127,7 +148,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 }
             }
         });
-        
+
         final Button buttonDelete = findViewById((R.id.button_delete));
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,4 +183,27 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Used to manage the ToolBar options (The 3 dots) right now not necessary
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }*/
 }

@@ -29,9 +29,7 @@ public class PurchaseListActivity extends AppCompatActivity {
 
     private ApolongoViewModel mApolongoViewModel;
     private TextView mTotalPrice;
-    private Date mStartDate;
-    private Date mFinishDate;
-    private String mCardName;
+    private Cycle mCycle;
     public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE = 2;
     public static final int RESULT_DELETE = -2;
@@ -40,23 +38,43 @@ public class PurchaseListActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_list);
+        mTotalPrice = findViewById(R.id.total_purchase_value);
+
+        //Initializes the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
-        final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
-        mTotalPrice = findViewById(R.id.total_purchase_value);
+        //Add a back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CycleListActivity.class);
+                DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+                String cardCycle= ((format.format(mCycle.getStart())).split("/")[0]).replaceAll(" ","");
+
+                intent.putExtra("cardName", mCycle.getCardName());
+                intent.putExtra("cardCycle", Integer.parseInt(cardCycle));
+
+                startActivity(intent);
+            }
+        });
 
         Intent intent = getIntent();
-        mStartDate = (Date)intent.getSerializableExtra("startDate");
-        mFinishDate = (Date)intent.getSerializableExtra("finishDate");
-        mCardName = intent.getStringExtra("cardName");
+        Date startDate = (Date)intent.getSerializableExtra("startDate");
+        Date finishDate = (Date)intent.getSerializableExtra("finishDate");
+        String cardName = intent.getStringExtra("cardName");
+        mCycle = new Cycle(startDate, finishDate, cardName);
 
-        mApolongoViewModel.getPurchasesFromCycle(mStartDate, mFinishDate, mCardName).observe(this, new Observer<List<Purchase>>() {
+        mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
+        final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel, mCycle);
+
+        mApolongoViewModel.getPurchasesFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardName()).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
                 //Set the total purchases value
-                String totalValue = Float.toString(mApolongoViewModel.getTotalPriceFromCycle(mStartDate, mFinishDate, mCardName));
+                String totalValue = Float.toString(mApolongoViewModel.getTotalPriceFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardName()));
                 String content = "Total " + totalValue + "€";
                 mTotalPrice.setText(content);
 
@@ -101,7 +119,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                     String purchaseDesc = data.getStringExtra("purchaseDesc");
 
                     //Insert the purchase in the database
-                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
                     mApolongoViewModel.insertPurchase(purchase);
 
                     Toast.makeText(getApplicationContext(), R.string.button_save, Toast.LENGTH_LONG).show();
@@ -134,7 +152,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                         purchaseDesc = data.getStringExtra("purchaseDesc");
 
                         //Update the purchase in the database
-                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
                         purchase.setPurchaseId(purchaseId);
                         mApolongoViewModel.updatePurchase(purchase);
 
@@ -149,7 +167,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                         purchaseDesc = data.getStringExtra("purchaseDesc");
 
                         //Delete the purchase in the database
-                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
                         purchase.setPurchaseId(purchaseId);
                         mApolongoViewModel.deletePurchase(purchase);
 
@@ -160,7 +178,8 @@ public class PurchaseListActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    //Used to manage the ToolBar options (The 3 dots) right now not necessary
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -180,6 +199,6 @@ public class PurchaseListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
 }

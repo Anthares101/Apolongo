@@ -49,13 +49,15 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
     }
 
     private final LayoutInflater mInflater;
+    private final Cycle mCycle;
     private List<Purchase> mPurchases; //Cached copy of purchases
     private ApolongoViewModel mViewModel;
 
     //We use the viewmodel to remove a Card Later
-    PurchaseListAdapter(Context context, ApolongoViewModel viewModel){
+    PurchaseListAdapter(Context context, ApolongoViewModel viewModel, Cycle cycle){
         mInflater = LayoutInflater.from(context);
         mViewModel = viewModel;
+        mCycle = cycle;
     }
 
     @Override
@@ -107,6 +109,10 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
                     intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
                     intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
+
+                    //Needed for the back button action
+                    intent.putExtra("StartDate", mCycle.getStart());
+                    intent.putExtra("FinishDate", mCycle.getFinish());
                     ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
                 }
             }
