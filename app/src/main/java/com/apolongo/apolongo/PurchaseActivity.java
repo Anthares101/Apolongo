@@ -29,11 +29,10 @@ public class PurchaseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mPurchaseId = Integer.parseInt(intent.getStringExtra("PurchaseId"));
-
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
-
         mPurchase = mApolongoViewModel.getPurchaseById(mPurchaseId);
 
+        //Now it shows the right information
         mNameEditable = findViewById(R.id.NameEditable);
         mNameEditable.setText(mPurchase.getPurchaseName());
 
