@@ -34,6 +34,7 @@ public class PurchaseListActivity extends AppCompatActivity {
     private String mCardName;
     public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
     public static final int UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE = 2;
+    public static final int RESULT_DELETE = -2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,27 +111,50 @@ public class PurchaseListActivity extends AppCompatActivity {
 
                 break;
             case UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE:
-                if (resultCode == RESULT_OK){
-                    DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+                Purchase purchase;
+                int purchaseId;
+                String purchaseName;
+                Date purchaseDate = null;
+                float purchasePrice;
+                String purchaseDesc;
 
-                    //Get the data from activity
-                    int purchaseId = data.getIntExtra("purchaseId", 0);
-                    String purchaseName = data.getStringExtra("purchaseName");
-                    Date purchaseDate = null;
-                    try {
-                        purchaseDate = format.parse(data.getStringExtra("purchaseDate"));
-                    }catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    float purchasePrice = Float.parseFloat(data.getStringExtra("purchasePrice"));
-                    String purchaseDesc = data.getStringExtra("purchaseDesc");
+                switch (resultCode){
+                    case RESULT_OK:
+                        DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
 
-                    //Update the purchase in the database
-                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
-                    purchase.setPurchaseId(purchaseId);
-                    mApolongoViewModel.updatePurchase(purchase);
+                        //Get the data from activity
+                        purchaseId = data.getIntExtra("purchaseId", 0);
+                        purchaseName = data.getStringExtra("purchaseName");
+                        try {
+                            purchaseDate = format.parse(data.getStringExtra("purchaseDate"));
+                        }catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        purchasePrice = Float.parseFloat(data.getStringExtra("purchasePrice"));
+                        purchaseDesc = data.getStringExtra("purchaseDesc");
 
-                    Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
+                        //Update the purchase in the database
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                        purchase.setPurchaseId(purchaseId);
+                        mApolongoViewModel.updatePurchase(purchase);
+
+                        Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
+                        break;
+                    case RESULT_DELETE:
+                        //Get the data from activity
+                        purchaseId = data.getIntExtra("purchaseId", 0);
+                        purchaseName = data.getStringExtra("purchaseName");
+                        purchaseDate = (Date) data.getSerializableExtra("purchaseDate");
+                        purchasePrice = data.getFloatExtra("purchasePrice", 0);
+                        purchaseDesc = data.getStringExtra("purchaseDesc");
+
+                        //Delete the purchase in the database
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+                        purchase.setPurchaseId(purchaseId);
+                        mApolongoViewModel.deletePurchase(purchase);
+
+                        Toast.makeText(getApplicationContext(), "Borrada", Toast.LENGTH_LONG).show();
+                        break;
                 }
                 break;
         }

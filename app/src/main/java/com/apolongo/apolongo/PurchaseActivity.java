@@ -1,9 +1,11 @@
 package com.apolongo.apolongo;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-        import android.content.Intent;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
         import android.widget.TextSwitcher;
         import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Card;
 import com.apolongo.apolongo.DB.Purchase;
@@ -36,7 +39,7 @@ public class PurchaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_purchase);
+        setContentView(R.layout.activity_purchase);
 
         //Initializes a Purchase object
         Intent intent = getIntent();
@@ -87,8 +90,8 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
 
-        final Button button = findViewById((R.id.button_save));
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button buttonSave = findViewById((R.id.button_save));
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent replyIntent = new Intent();
@@ -124,5 +127,38 @@ public class PurchaseActivity extends AppCompatActivity {
             }
         });
 
+        final Button buttonDelete = findViewById((R.id.button_delete));
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Borrar compra "+mPurchase.getPurchaseName());
+                builder.setMessage("Eliminará definitivamente esta compra");
+
+                builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent replyIntent = new Intent();
+
+                        replyIntent.putExtra("purchaseId", mPurchase.getPurchaseId());
+                        replyIntent.putExtra("purchaseName", mPurchase.getPurchaseName());
+                        replyIntent.putExtra("purchaseDate", mPurchase.getPurchaseDate());
+                        replyIntent.putExtra("purchasePrice", mPurchase.getPurchasePrice());
+                        replyIntent.putExtra("purchaseDesc", mPurchase.getPurchaseSDescp());
+                        setResult(PurchaseListActivity.RESULT_DELETE, replyIntent);
+
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 }

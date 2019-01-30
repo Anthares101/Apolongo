@@ -103,7 +103,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
                                                                 mCycles.get(position_copy).getFinish(),
                                                                 mCycles.get(position_copy).getCardName());
                             notifyItemRemoved(position_copy);
-                            Toast.makeText(view.getContext(), " Borrada", Toast.LENGTH_LONG).show();
+                            Toast.makeText(view.getContext(), "Borrada", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

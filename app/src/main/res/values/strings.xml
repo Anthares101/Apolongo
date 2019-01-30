@@ -7,6 +7,7 @@
     <string name="hint_purchase_date">Fecha</string>
     <string name="hint_desc">Descripción...</string>
     <string name="button_save">Guardar</string>
+    <string name="button_delete">Borrar</string>
     <string name="saved">Cambios guardados</string>
     <string name="empty_not_saved">No guardado</string>
     <string name="alreadyExist_not_saved">El nombre ya existe</string>
