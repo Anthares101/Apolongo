@@ -84,7 +84,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
 
             holder.mCycleItemView.setText(content);
         } else{
-            holder.mCycleItemView.setText("No name");
+            holder.mCycleItemView.setText(R.string.no_dataYet);
         }
 
         //For every Item in the recycler list a OnClick listener is configured

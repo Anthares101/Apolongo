@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Purchase;
 
-import java.io.PrintStream;
 import java.util.List;
 
 public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapter.PurchaseViewHolder> {
@@ -49,15 +48,13 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
     }
 
     private final LayoutInflater mInflater;
-    private final Cycle mCycle;
     private List<Purchase> mPurchases; //Cached copy of purchases
     private ApolongoViewModel mViewModel;
 
     //We use the viewmodel to remove a Card Later
-    PurchaseListAdapter(Context context, ApolongoViewModel viewModel, Cycle cycle){
+    PurchaseListAdapter(Context context, ApolongoViewModel viewModel){
         mInflater = LayoutInflater.from(context);
         mViewModel = viewModel;
-        mCycle = cycle;
     }
 
     @Override
@@ -73,7 +70,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
             String content = current.getPurchaseName() + "\nPrecio: " + current.getPurchasePrice() + "€";
             holder.mPurchaseItemView.setText(content);
         } else{
-            holder.mPurchaseItemView.setText("No name");
+            holder.mPurchaseItemView.setText(R.string.no_dataYet);
         }
 
         //For every Item in the recycler list a OnClick listener is configured
@@ -110,9 +107,6 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
                     intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
 
-                    //Needed for the back button action
-                    intent.putExtra("StartDate", mCycle.getStart());
-                    intent.putExtra("FinishDate", mCycle.getFinish());
                     ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
                 }
             }

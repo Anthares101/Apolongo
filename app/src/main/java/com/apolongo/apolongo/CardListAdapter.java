@@ -68,7 +68,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             Card current = mCards.get(position);
             holder.cardItemView.setText(current.getCardName());
         } else{
-            holder.cardItemView.setText("No name");
+            holder.cardItemView.setText(R.string.no_dataYet);
         }
 
         //For every Item in the recycler list a OnClick listener is configured

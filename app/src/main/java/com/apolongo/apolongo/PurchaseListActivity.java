@@ -50,14 +50,7 @@ public class PurchaseListActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CycleListActivity.class);
-                DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
-                String cardCycle= ((format.format(mCycle.getStart())).split("/")[0]).replaceAll(" ","");
-
-                intent.putExtra("cardName", mCycle.getCardName());
-                intent.putExtra("cardCycle", Integer.parseInt(cardCycle));
-
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -68,7 +61,7 @@ public class PurchaseListActivity extends AppCompatActivity {
         mCycle = new Cycle(startDate, finishDate, cardName);
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
-        final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel, mCycle);
+        final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
 
         mApolongoViewModel.getPurchasesFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardName()).observe(this, new Observer<List<Purchase>>() {
             @Override

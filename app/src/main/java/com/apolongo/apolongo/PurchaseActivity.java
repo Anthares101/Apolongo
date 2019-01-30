@@ -8,8 +8,6 @@ import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,9 +29,6 @@ public class PurchaseActivity extends AppCompatActivity {
     private EditText mEditPurchaseDesc;
 
     private Purchase mPurchase;
-    //Cycle dates are used for the return action
-    private Date mStartDate;
-    private Date mFinishDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +39,17 @@ public class PurchaseActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Add a back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         Intent intent = getIntent();
-        mStartDate  = (Date)intent.getSerializableExtra("StartDate");
-        mFinishDate  = (Date)intent.getSerializableExtra("FinishDate");
 
         //Initializes a Purchase object
         int purchaseId = intent.getIntExtra("PurchaseId", 0);
@@ -58,22 +61,6 @@ public class PurchaseActivity extends AppCompatActivity {
 
         mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, purchaseCardName);
         mPurchase.setPurchaseId(purchaseId);
-
-        //Add a back button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PurchaseListActivity.class);
-
-                intent.putExtra("startDate", mStartDate);
-                intent.putExtra("finishDate", mFinishDate);
-                intent.putExtra("cardName", mPurchase.getPurchaseCardName());
-
-                startActivity(intent);
-            }
-        });
 
         DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
 
