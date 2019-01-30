@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -54,7 +55,7 @@ public class ApolongoRepository {
                     + " st: " + Arrays.toString(e.getStackTrace()));
         }
 
-        return alreadyExistAsyncTask.cardCount;
+        return alreadyExistAsyncTask.mCardCount;
     }
 
     //purchases_table operations
@@ -66,12 +67,20 @@ public class ApolongoRepository {
         new insertPurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
+    public void updatePurchase(Purchase purchase){
+        new updatePurchaseAsyncTask(mPurchaseDao).execute(purchase);
+    }
+
     public void deletePurchase (Purchase purchase){
         new deletePurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
-    public LiveData<List<Purchase>> getPurchase(String cardName){
-        return mPurchaseDao.getPurchase(cardName);
+    public void deletePurchasesFromCycle(Date startDate, Date finishDate, String cardName){
+        new deletePurchasesFromCycleAsyncTask(mPurchaseDao, cardName).execute(startDate, finishDate);
+    }
+
+    public LiveData<List<Purchase>> getPurchases(String cardName){
+        return mPurchaseDao.getPurchases(cardName);
     }
 
     public Purchase getPurchaseById(int purchaseId){
@@ -86,6 +95,24 @@ public class ApolongoRepository {
         }
 
         return getPurchaseByIdAsyncTask.mpurchase;
+    }
+
+    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate , String cardName){
+        return mPurchaseDao.getPurchasesFromCycle(startDate, finishDate, cardName);
+    }
+
+    public float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName){
+        AsyncTask<Date, Date, Void> asyncTask = new getTotalPriceFromCycleAsyncTask(mPurchaseDao, cardName);
+        asyncTask.execute(startDate, finishDate);
+
+        try {
+            asyncTask.get();
+        }catch (InterruptedException | ExecutionException e){
+            System.err.println("Uncaught exception is detected! " + e
+                    + " st: " + Arrays.toString(e.getStackTrace()));
+        }
+
+        return getTotalPriceFromCycleAsyncTask.mTotal;
     }
 
     //Async tasks
@@ -124,7 +151,7 @@ public class ApolongoRepository {
     private static class alreadyExistAsyncTask extends AsyncTask<String, Void, Void> {
 
         private CardDao mAsyncTaskDao;
-        static int cardCount;
+        static int mCardCount;
 
         alreadyExistAsyncTask(CardDao dao) {
             mAsyncTaskDao = dao;
@@ -132,7 +159,7 @@ public class ApolongoRepository {
 
         @Override
         protected Void doInBackground(final String... params) {
-            cardCount = mAsyncTaskDao.alreadyExist(params[0]);
+            mCardCount = mAsyncTaskDao.alreadyExist(params[0]);
             return null;
         }
     }
@@ -166,6 +193,21 @@ public class ApolongoRepository {
         }
     }
 
+    private static class updatePurchaseAsyncTask extends AsyncTask<Purchase, Void, Void> {
+
+        private PurchaseDao mAsyncTaskDao;
+
+        updatePurchaseAsyncTask(PurchaseDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Purchase... params) {
+            mAsyncTaskDao.update(params[0]);
+            return null;
+        }
+    }
+
     private static class deletePurchaseAsyncTask extends AsyncTask<Purchase, Void, Void> {
 
         private PurchaseDao mAsyncTaskDao;
@@ -177,6 +219,40 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final Purchase... params) {
             mAsyncTaskDao.delete(params[0]);
+            return null;
+        }
+    }
+
+    private static class deletePurchasesFromCycleAsyncTask extends AsyncTask<Date, Date, Void> {
+
+        private PurchaseDao mAsyncTaskDao;
+        private String mCardName;
+
+        deletePurchasesFromCycleAsyncTask(PurchaseDao dao, String cardName) {
+            mAsyncTaskDao = dao;
+            mCardName = cardName;
+        }
+
+        @Override
+        protected Void doInBackground(final Date... params) {
+            mAsyncTaskDao.deletePurchasesFromCycle(params[0], params[1], mCardName);
+            return null;
+        }
+    }
+
+    private static class getTotalPriceFromCycleAsyncTask extends AsyncTask<Date, Date, Void> {
+        private PurchaseDao mAsyncTaskDao;
+        private String mCardName;
+        static float mTotal;
+
+        getTotalPriceFromCycleAsyncTask(PurchaseDao dao, String cardName) {
+            mAsyncTaskDao = dao;
+            mCardName = cardName;
+        }
+
+        @Override
+        protected Void doInBackground(final Date... params) {
+            mTotal = mAsyncTaskDao.getTotalPriceFromCycle(params[0], params[1], mCardName);
             return null;
         }
     }

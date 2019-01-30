@@ -22,7 +22,7 @@ public abstract class ApolongoDB extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             ApolongoDB.class, "apolongo_database")
-                            .fallbackToDestructiveMigration()//Destroy the DB if the schema changes
+                            //.fallbackToDestructiveMigration()//Destroy the DB if the schema changes
                             .build();
                 }
             }

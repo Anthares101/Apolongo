@@ -8,6 +8,7 @@ import com.apolongo.apolongo.DB.ApolongoRepository;
 import com.apolongo.apolongo.DB.Card;
 import com.apolongo.apolongo.DB.Purchase;
 
+import java.util.Date;
 import java.util.List;
 
 public class ApolongoViewModel extends AndroidViewModel {
@@ -34,7 +35,11 @@ public class ApolongoViewModel extends AndroidViewModel {
     //Purchases operations
     LiveData<List<Purchase>> getAllPurchasess() { return mAllPurchases; }
     public void insertPurchase(Purchase purchase) { mRepository.insertPurchase(purchase); }
+    public void updatePurchase(Purchase purchase) {mRepository.updatePurchase(purchase);}
     public void deletePurchase(Purchase purchase) { mRepository.deletePurchase(purchase); }
-    public LiveData<List<Purchase>> getPurchase(String cardName){return mRepository.getPurchase(cardName);}
-    public Purchase getPurchaseById(int purchaseId){return mRepository.getPurchaseById(purchaseId);}
+    public void deletePurchasesFromCycle(Date startDate, Date finishDate, String cardName) { mRepository.deletePurchasesFromCycle(startDate, finishDate, cardName); }
+    public LiveData<List<Purchase>> getPurchases(String cardName) { return mRepository.getPurchases(cardName); }
+    public Purchase getPurchaseById(int purchaseId) { return mRepository.getPurchaseById(purchaseId); }
+    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, String cardName) { return mRepository.getPurchasesFromCycle(startDate, finishDate, cardName); }
+    public float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName) {return mRepository.getTotalPriceFromCycle(startDate, finishDate, cardName); }
 }

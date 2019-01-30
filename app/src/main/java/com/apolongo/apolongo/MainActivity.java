@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_CARD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            Card card = new Card(data.getStringExtra(NewCardActivity.EXTRA_REPLY), "image",1);
+            Card card = new Card(data.getStringExtra("cardName"), "image",data.getIntExtra("cycle", 1));
             mApolongoViewModel.insertCard(card);
         } else {
             Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();

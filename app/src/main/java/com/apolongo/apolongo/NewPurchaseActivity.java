@@ -14,11 +14,10 @@ import com.apolongo.apolongo.Fragments.DatePickerFragment;
 
 public class NewPurchaseActivity extends AppCompatActivity {
 
-    public static final String EXTRA_REPLY = "com.apolongo.android.purchaselistsql.REPLY";
-
     private EditText mEditPurchaseName;
     private EditText mEditPurchasePrice;
     private EditText mEditPurchaseDate;
+    private EditText mEditPurchaseDesc;
 
 
     @Override
@@ -29,6 +28,7 @@ public class NewPurchaseActivity extends AppCompatActivity {
         mEditPurchaseName = findViewById(R.id.edit_purchase_name);
         mEditPurchasePrice = findViewById(R.id.edit_purchase_price);
         mEditPurchaseDate = findViewById(R.id.edit_purchase_date);
+        mEditPurchaseDesc = findViewById(R.id.edit_purchase_desc);
 
         mEditPurchaseDate.setOnClickListener(new View.OnClickListener() {
             private void showDatePickerDialog() {
@@ -64,11 +64,15 @@ public class NewPurchaseActivity extends AppCompatActivity {
                     String purchaseName = mEditPurchaseName.getText().toString();
                     String purchaseDate = mEditPurchaseDate.getText().toString();
                     String purchasePrice = mEditPurchasePrice.getText().toString();
-                    replyIntent.putExtra("name", purchaseName);
-                    replyIntent.putExtra("date", purchaseDate);
-                    replyIntent.putExtra("price", purchasePrice);
+                    String purchaseDesc = mEditPurchaseDesc.getText().toString();
+
+                    replyIntent.putExtra("purchaseName", purchaseName);
+                    replyIntent.putExtra("purchaseDate", purchaseDate);
+                    replyIntent.putExtra("purchasePrice", purchasePrice);
+                    replyIntent.putExtra("purchaseDesc", purchaseDesc);
+
                     setResult(RESULT_OK, replyIntent);
-                    //It goes back to MainActivity
+                    //It goes back to PurchaseListActivity
                     finish();
                 }
             }

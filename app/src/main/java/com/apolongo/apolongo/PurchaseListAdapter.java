@@ -1,5 +1,6 @@
 package com.apolongo.apolongo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -67,7 +68,8 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
     public void onBindViewHolder(PurchaseViewHolder holder, int position){
         if(mPurchases != null){
             Purchase current = mPurchases.get(position);
-            holder.mPurchaseItemView.setText(current.getPurchaseName());
+            String content = current.getPurchaseName() + "\nPrecio: " + current.getPurchasePrice() + "€";
+            holder.mPurchaseItemView.setText(content);
         } else{
             holder.mPurchaseItemView.setText("No name");
         }
@@ -86,9 +88,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(view.getContext(), mPurchases.get(position_copy).getPurchaseName() + " borrada", Toast.LENGTH_LONG).show();
                             mViewModel.deletePurchase(mPurchases.get(position_copy));
-                            mPurchases.remove(position_copy);
                             notifyItemRemoved(position_copy);
-                            //Toast.makeText(view.getContext(), "Borrado (Es mentira)", Toast.LENGTH_LONG).show();
                         }
                     });
                     builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -101,8 +101,13 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
                     dialog.show();
                 } else {//Short click will take the user to the selected purchase info
                     Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
-                    intent.putExtra("PurchaseId", Integer.toString(mPurchases.get(position).getPurchaseId()));
-                    view.getContext().startActivity(intent);
+                    intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
+                    intent.putExtra("PurchaseName",mPurchases.get(position).getPurchaseName());
+                    intent.putExtra("PurchasePrice", mPurchases.get(position).getPurchasePrice());
+                    intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
+                    intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
+                    intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
+                    ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
                 }
             }
         });
