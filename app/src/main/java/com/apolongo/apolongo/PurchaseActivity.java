@@ -43,6 +43,7 @@ public class PurchaseActivity extends AppCompatActivity {
 
         //Initializes a Purchase object
         Intent intent = getIntent();
+        
         int purchaseId = intent.getIntExtra("PurchaseId", 0);
         String purchaseName = intent.getStringExtra("PurchaseName");
         float purchasePrice = intent.getFloatExtra("PurchasePrice", 0);
@@ -126,7 +127,7 @@ public class PurchaseActivity extends AppCompatActivity {
                 }
             }
         });
-
+        
         final Button buttonDelete = findViewById((R.id.button_delete));
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
