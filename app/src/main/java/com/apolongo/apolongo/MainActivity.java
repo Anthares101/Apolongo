@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ApolongoViewModel mApolongoViewModel;
     public static final int NEW_CARD_ACTIVITY_REQUEST_CODE = 1;
+    public static final int UPDATE_CARD_ACTIVITY_REQUEST_CODE = 2;
+    public static final int RESULT_DELETE = -2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,11 +65,53 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == NEW_CARD_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            Card card = new Card(data.getStringExtra("cardName"), "image",data.getIntExtra("cycle", 1));
-            mApolongoViewModel.insertCard(card);
-        } else {
-            Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+        switch (requestCode){
+            case NEW_CARD_ACTIVITY_REQUEST_CODE:
+                if (resultCode == RESULT_OK){
+                    Card card = new Card(data.getStringExtra("cardName"), "image",data.getIntExtra("cycle", 1));
+                    mApolongoViewModel.insertCard(card);
+                } else {
+                    Toast.makeText(getApplicationContext(),R.string.empty_not_saved, Toast.LENGTH_LONG).show();
+                }
+                break;
+            case UPDATE_CARD_ACTIVITY_REQUEST_CODE:
+                String cardName;
+                int billingCycle;
+                int cardId;
+
+                Card card;
+
+                switch (resultCode){
+                    case RESULT_OK:
+                        //Get the data from activity
+                        cardName = data.getStringExtra("CardName");
+                        billingCycle = Integer.parseInt(data.getStringExtra("BillingCycle"));
+                        cardId = data.getIntExtra("CardId", 0);
+
+                        //Update the purchase in the database
+                        card = new Card(cardName, "image", billingCycle);
+                        card.setCardId(cardId);
+
+                        mApolongoViewModel.updateCard(card);
+
+                        Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
+                        break;
+                    case RESULT_DELETE:
+                        //Get the data from activity
+                        cardName = data.getStringExtra("CardName");
+                        billingCycle = data.getIntExtra("BillingCycle", 1);
+                        cardId = data.getIntExtra("CardId", 0);
+
+                        //Delete the purchase in the database
+                        card = new Card(cardName, "image", billingCycle);
+                        card.setCardId(cardId);
+
+                        mApolongoViewModel.deleteCard(card);
+
+                        Toast.makeText(getApplicationContext(), "Borrada", Toast.LENGTH_LONG).show();
+                        break;
+                }
+                break;
         }
     }
 

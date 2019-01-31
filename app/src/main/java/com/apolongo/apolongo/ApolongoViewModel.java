@@ -28,6 +28,7 @@ public class ApolongoViewModel extends AndroidViewModel {
     //Cards operations
     LiveData<List<Card>> getAllCards() { return mAllCards; }
     public void insertCard(Card card) { mRepository.insertCard(card); }
+    public void updateCard(Card card){ mRepository.updateCard(card); }
     public void deleteCard(Card card) { mRepository.deleteCard(card); }
     public Card getCardByName(String cardName) {return mRepository.getCardByName(cardName);}
     public int alreadyExist(String cardName) {return mRepository.alreadyExist(cardName);}
@@ -37,9 +38,9 @@ public class ApolongoViewModel extends AndroidViewModel {
     public void insertPurchase(Purchase purchase) { mRepository.insertPurchase(purchase); }
     public void updatePurchase(Purchase purchase) {mRepository.updatePurchase(purchase);}
     public void deletePurchase(Purchase purchase) { mRepository.deletePurchase(purchase); }
-    public void deletePurchasesFromCycle(Date startDate, Date finishDate, String cardName) { mRepository.deletePurchasesFromCycle(startDate, finishDate, cardName); }
-    public LiveData<List<Purchase>> getPurchases(String cardName) { return mRepository.getPurchases(cardName); }
+    public void deletePurchasesFromCycle(Date startDate, Date finishDate, int cardId) { mRepository.deletePurchasesFromCycle(startDate, finishDate, cardId); }
+    public LiveData<List<Purchase>> getPurchases(int cardId) { return mRepository.getPurchases(cardId); }
     public Purchase getPurchaseById(int purchaseId) { return mRepository.getPurchaseById(purchaseId); }
-    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, String cardName) { return mRepository.getPurchasesFromCycle(startDate, finishDate, cardName); }
-    public float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName) {return mRepository.getTotalPriceFromCycle(startDate, finishDate, cardName); }
+    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, int cardId) { return mRepository.getPurchasesFromCycle(startDate, finishDate, cardId); }
+    public float getTotalPriceFromCycle(Date startDate, Date finishDate, int cardId) {return mRepository.getTotalPriceFromCycle(startDate, finishDate, cardId); }
 }

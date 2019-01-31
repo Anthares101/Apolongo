@@ -14,9 +14,7 @@ import android.widget.Toast;
 import com.apolongo.apolongo.Auxiliar.MonthConverter;
 
 import java.text.DateFormat;
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +29,43 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+
+            //An OnClick listener is configured
+            setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(final View view, int position, boolean isLongClick) {
+                    if (isLongClick) {//Long click will allow user to delete a card
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setTitle("Borrar ciclo seleccionado");
+                        final int position_copy = position; //This variable is to evade an error
+                        builder.setMessage("Eliminará definitivamente este ciclo y compras asociadas");
+                        builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mViewModel.deletePurchasesFromCycle(mCycles.get(position_copy).getStart(),
+                                        mCycles.get(position_copy).getFinish(),
+                                        mCycles.get(position_copy).getCardId());
+                                notifyItemRemoved(position_copy);
+                                Toast.makeText(view.getContext(), "Borrada", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else {//Short click will take the user to the selected cycle info
+                        Intent intent = new Intent(view.getContext(), PurchaseListActivity.class);
+                        intent.putExtra("startDate", mCycles.get(position).getStart());
+                        intent.putExtra("finishDate", mCycles.get(position).getFinish());
+                        intent.putExtra("cardId", mCycles.get(position).getCardId());
+                        view.getContext().startActivity(intent);
+                    }
+                }
+            });
         }
 
         //Set a listener for both Long and short click in items
@@ -77,7 +112,7 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
 
             String month = MonthConverter.getStringMonth(Integer.parseInt(dateEnd[1].replaceAll(" ", "")));
             String year = dateEnd[2].replaceAll(" ", "");
-            float total = mViewModel.getTotalPriceFromCycle(current.getStart(), current.getFinish(), current.getCardName());
+            float total = mViewModel.getTotalPriceFromCycle(current.getStart(), current.getFinish(), current.getCardId());
 
             String content = month + " " + year + "\nTotal: " + Float.toString(total) + "€";
             //String content = format.format(current.getStart()) + " - " + format.format(current.getFinish()); //Just if cycles have to be checked the code is kept here
@@ -86,43 +121,6 @@ public class CycleListAdapter extends RecyclerView.Adapter<CycleListAdapter.Cycl
         } else{
             holder.mCycleItemView.setText(R.string.no_dataYet);
         }
-
-        //For every Item in the recycler list a OnClick listener is configured
-        holder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(final View view, int position, boolean isLongClick) {
-                if (isLongClick) {//Long click will allow user to delete a card
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar ciclo seleccionado");
-                    final int position_copy = position; //This variable is to evade an error
-                    builder.setMessage("Eliminará definitivamente este ciclo y compras asociadas");
-                    builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mViewModel.deletePurchasesFromCycle(mCycles.get(position_copy).getStart(),
-                                                                mCycles.get(position_copy).getFinish(),
-                                                                mCycles.get(position_copy).getCardName());
-                            notifyItemRemoved(position_copy);
-                            Toast.makeText(view.getContext(), "Borrada", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {//Short click will take the user to the selected purchase info
-                    Intent intent = new Intent(view.getContext(), PurchaseListActivity.class);
-                    intent.putExtra("startDate", mCycles.get(position).getStart());
-                    intent.putExtra("finishDate", mCycles.get(position).getFinish());
-                    intent.putExtra("cardName", mCycles.get(position).getCardName());
-                    view.getContext().startActivity(intent);
-                }
-            }
-        });
     }
 
     void setCycles(List<Cycle> cycles){

@@ -28,6 +28,45 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+
+            //An OnClick listener is configured
+            setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(final View view, int position, boolean isLongClick) {
+                    if (isLongClick) {//Long click will allow user to delete a card
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                        builder.setTitle("Borrar compra " + mPurchases.get(position).getPurchaseName());
+                        final int position_copy = position; //This variable is to evade an error
+                        builder.setMessage("Eliminará definitivamente esta compra");
+                        builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(view.getContext(), mPurchases.get(position_copy).getPurchaseName() + " borrada", Toast.LENGTH_LONG).show();
+                                mViewModel.deletePurchase(mPurchases.get(position_copy));
+                                notifyItemRemoved(position_copy);
+                            }
+                        });
+                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    } else {//Short click will take the user to the selected purchase info
+                        Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
+                        intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
+                        intent.putExtra("PurchaseName",mPurchases.get(position).getPurchaseName());
+                        intent.putExtra("PurchasePrice", mPurchases.get(position).getPurchasePrice());
+                        intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
+                        intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
+                        intent.putExtra("PurchaseCardId",mPurchases.get(position).getPurchaseCardId());
+
+                        ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
+                    }
+                }
+            });
         }
 
         //Set a listener for both Long and short click in items
@@ -72,45 +111,6 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
         } else{
             holder.mPurchaseItemView.setText(R.string.no_dataYet);
         }
-
-        //For every Item in the recycler list a OnClick listener is configured
-        holder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(final View view, int position, boolean isLongClick) {
-                if (isLongClick) {//Long click will allow user to delete a card
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar compra " + mPurchases.get(position).getPurchaseName());
-                    final int position_copy = position; //This variable is to evade an error
-                    builder.setMessage("Eliminará definitivamente esta compra");
-                    builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(view.getContext(), mPurchases.get(position_copy).getPurchaseName() + " borrada", Toast.LENGTH_LONG).show();
-                            mViewModel.deletePurchase(mPurchases.get(position_copy));
-                            notifyItemRemoved(position_copy);
-                        }
-                    });
-                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {//Short click will take the user to the selected purchase info
-                    Intent intent = new Intent(view.getContext(), PurchaseActivity.class);
-                    intent.putExtra("PurchaseId", mPurchases.get(position).getPurchaseId());
-                    intent.putExtra("PurchaseName",mPurchases.get(position).getPurchaseName());
-                    intent.putExtra("PurchasePrice", mPurchases.get(position).getPurchasePrice());
-                    intent.putExtra("PurchaseDate", mPurchases.get(position).getPurchaseDate());
-                    intent.putExtra("PurchaseDesc", mPurchases.get(position).getPurchaseSDescp());
-                    intent.putExtra("PurchaseCardName",mPurchases.get(position).getPurchaseCardName());
-
-                    ((Activity)(view.getContext())).startActivityForResult(intent, PurchaseListActivity.UPDATE_PURCHASE_ACTIVITY_REQUEST_CODE);
-                }
-            }
-        });
     }
 
     void setPurchases(List<Purchase> cards){

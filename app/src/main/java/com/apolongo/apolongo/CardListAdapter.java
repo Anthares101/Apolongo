@@ -1,10 +1,12 @@
 package com.apolongo.apolongo;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
 
-    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnCreateContextMenuListener {
+    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener {
         private final TextView cardItemView;
         private ItemClickListener mItemClickListener;
 
@@ -30,7 +32,19 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
 
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
-            //itemView.setOnLongClickListener(this);
+
+            //A OnClick listener is configured
+            setItemClickListener(new ItemClickListener() {
+                @Override
+                public void onClick(final View view, int position, boolean isLongClick) {
+                    if (!isLongClick) {//Short click will take the user to the selected card purchases area
+                        Intent intent = new Intent(view.getContext(), CycleListActivity.class);
+                        intent.putExtra("cardId", mCards.get(position).getCardId());
+                        intent.putExtra("cardCycle", mCards.get(position).getBillingCycle());
+                        view.getContext().startActivity(intent);
+                    }
+                }
+            });
         }
 
         //Create the contextual Menu
@@ -49,12 +63,18 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
           public boolean onMenuItemClick(MenuItem item){
               switch (item.getItemId()){
                   case 1://Launch CardActivity
-                      Toast.makeText(mInflater.getContext(), mCards.get(mPosition).getCardName() + " editada", Toast.LENGTH_LONG).show();
+                      Intent intent = new Intent(mInflater.getContext(), CardActivity.class);
+
+                      intent.putExtra("CardId",mCards.get(getAdapterPosition()).getCardId());
+                      intent.putExtra("CardName",mCards.get(getAdapterPosition()).getCardName());
+                      intent.putExtra("BillingCycle",mCards.get(getAdapterPosition()).getBillingCycle());
+
+                      ((Activity)(mInflater.getContext())).startActivityForResult(intent, MainActivity.UPDATE_CARD_ACTIVITY_REQUEST_CODE);
                       break;
                   case 2://Delete a Card
                       final AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
-                      builder.setTitle("Borrar tarjeta " + mCards.get(mPosition).getCardName());
-                      final int position_copy = mPosition; //This variable is to evade an error
+                      builder.setTitle("Borrar tarjeta " + mCards.get(getAdapterPosition()).getCardName());
+                      final int position_copy = getAdapterPosition(); //This variable is to evade an error
                       builder.setMessage("Eliminará todas las compras relacionadas");
                       builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
                           @Override
@@ -88,19 +108,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         public void onClick(View view){
             mItemClickListener.onClick(view, getAdapterPosition(), false);
         }
-
-        @Override
-        public boolean onLongClick(View view){
-            mItemClickListener.onClick(view, getAdapterPosition(), true);
-            return true;
-        }
     }
 
     private final LayoutInflater mInflater;
     private List<Card> mCards; //Cached copy of cards
     private ApolongoViewModel mViewModel;
-    //Used to know where the used long clicked
-    private int mPosition;
 
     //We use the viewmodel to remove a Card Later
     CardListAdapter(Context context, ApolongoViewModel viewModel){
@@ -118,25 +130,12 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     public void onBindViewHolder(CardViewHolder holder, int position){
         if(mCards != null){
             Card current = mCards.get(position);
-            holder.cardItemView.setText(current.getCardName());
+
+            String content = current.getCardName() + "\nCiclo: Día " + String.valueOf(current.getBillingCycle());
+            holder.cardItemView.setText(content);
         } else{
             holder.cardItemView.setText(R.string.no_dataYet);
         }
-
-        //For every Item in the recycler list a OnClick listener is configured
-        holder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onClick(final View view, int position, boolean isLongClick) {
-                if (isLongClick) {//Long click will safe some information about the selected item for the contextual menu
-                    mPosition = position;
-                } else {//Short click will take the user to the selected card purchases area
-                    Intent intent = new Intent(view.getContext(), CycleListActivity.class);
-                    intent.putExtra("cardName", mCards.get(position).getCardName());
-                    intent.putExtra("cardCycle", mCards.get(position).getBillingCycle());
-                    view.getContext().startActivity(intent);
-                }
-            }
-        });
     }
 
     void setCards(List<Card> cards){

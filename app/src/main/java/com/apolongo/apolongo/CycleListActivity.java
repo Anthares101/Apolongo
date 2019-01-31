@@ -26,7 +26,7 @@ import java.util.Locale;
 public class CycleListActivity extends AppCompatActivity {
     private ApolongoViewModel mApolongoViewModel;
     public static final int NEW_PURCHASE_ACTIVITY_REQUEST_CODE = 1;
-    private String mCardName;
+    private int mCardId;
     private int mCycle;
 
     @Override
@@ -49,13 +49,13 @@ public class CycleListActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        mCardName = intent.getStringExtra("cardName");
+        mCardId = intent.getIntExtra("cardId", 0);
         mCycle = intent.getIntExtra("cardCycle",1);
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final CycleListAdapter adapter = new CycleListAdapter(this, mApolongoViewModel);
 
-        mApolongoViewModel.getPurchases(mCardName).observe(this, new Observer<List<Purchase>>() {
+        mApolongoViewModel.getPurchases(mCardId).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
                 List<Cycle> cycles = new ArrayList<>();
@@ -130,7 +130,7 @@ public class CycleListActivity extends AppCompatActivity {
                     }
 
 
-                    cycle = new Cycle(start, finish, mCardName);
+                    cycle = new Cycle(start, finish, mCardId);
                     //The calculated cycle is added to the cycle list if the list doesn't contain it already
                     int j = 0;
                     while(j < cycles.size() && cycles.get(j).getStart().compareTo(cycle.getStart()) != 0)
@@ -178,7 +178,7 @@ public class CycleListActivity extends AppCompatActivity {
             String purchaseDesc = data.getStringExtra("purchaseDesc");
 
             //Insert the purchase in the database
-            Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardName);
+            Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCardId);
             mApolongoViewModel.insertPurchase(purchase);
 
             Toast.makeText(getApplicationContext(), R.string.button_save, Toast.LENGTH_LONG).show();

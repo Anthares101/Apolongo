@@ -57,9 +57,9 @@ public class PurchaseActivity extends AppCompatActivity {
         float purchasePrice = intent.getFloatExtra("PurchasePrice", 0);
         Date purchaseDate = (Date)intent.getSerializableExtra("PurchaseDate");
         String purchaseDesc = intent.getStringExtra("PurchaseDesc");
-        String purchaseCardName = intent.getStringExtra("PurchaseCardName");
+        int purchaseCardId = intent.getIntExtra("PurchaseCardId", 0);
 
-        mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, purchaseCardName);
+        mPurchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, purchaseCardId);
         mPurchase.setPurchaseId(purchaseId);
 
         DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);

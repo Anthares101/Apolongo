@@ -38,6 +38,10 @@ public class ApolongoRepository {
         new insertCardAsyncTask(mCardDao).execute(card);
     }
 
+    public void updateCard(Card card){
+        new updateCardAsyncTask(mCardDao).execute(card);
+    }
+
     public void deleteCard (Card card){
         new deleteCardAsyncTask(mCardDao).execute(card);
     }
@@ -75,12 +79,12 @@ public class ApolongoRepository {
         new deletePurchaseAsyncTask(mPurchaseDao).execute(purchase);
     }
 
-    public void deletePurchasesFromCycle(Date startDate, Date finishDate, String cardName){
-        new deletePurchasesFromCycleAsyncTask(mPurchaseDao, cardName).execute(startDate, finishDate);
+    public void deletePurchasesFromCycle(Date startDate, Date finishDate, int cardId){
+        new deletePurchasesFromCycleAsyncTask(mPurchaseDao, cardId).execute(startDate, finishDate);
     }
 
-    public LiveData<List<Purchase>> getPurchases(String cardName){
-        return mPurchaseDao.getPurchases(cardName);
+    public LiveData<List<Purchase>> getPurchases(int cardId){
+        return mPurchaseDao.getPurchases(cardId);
     }
 
     public Purchase getPurchaseById(int purchaseId){
@@ -97,12 +101,12 @@ public class ApolongoRepository {
         return getPurchaseByIdAsyncTask.mpurchase;
     }
 
-    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate , String cardName){
-        return mPurchaseDao.getPurchasesFromCycle(startDate, finishDate, cardName);
+    public LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate , int cardId){
+        return mPurchaseDao.getPurchasesFromCycle(startDate, finishDate, cardId);
     }
 
-    public float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName){
-        AsyncTask<Date, Date, Void> asyncTask = new getTotalPriceFromCycleAsyncTask(mPurchaseDao, cardName);
+    public float getTotalPriceFromCycle(Date startDate, Date finishDate, int cardId){
+        AsyncTask<Date, Date, Void> asyncTask = new getTotalPriceFromCycleAsyncTask(mPurchaseDao, cardId);
         asyncTask.execute(startDate, finishDate);
 
         try {
@@ -129,6 +133,21 @@ public class ApolongoRepository {
         @Override
         protected Void doInBackground(final Card... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateCardAsyncTask extends AsyncTask<Card, Void, Void> {
+
+        private CardDao mAsyncTaskDao;
+
+        updateCardAsyncTask(CardDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Card... params) {
+            mAsyncTaskDao.update(params[0]);
             return null;
         }
     }
@@ -226,33 +245,33 @@ public class ApolongoRepository {
     private static class deletePurchasesFromCycleAsyncTask extends AsyncTask<Date, Date, Void> {
 
         private PurchaseDao mAsyncTaskDao;
-        private String mCardName;
+        private int mCardId;
 
-        deletePurchasesFromCycleAsyncTask(PurchaseDao dao, String cardName) {
+        deletePurchasesFromCycleAsyncTask(PurchaseDao dao, int cardId) {
             mAsyncTaskDao = dao;
-            mCardName = cardName;
+            mCardId = cardId;
         }
 
         @Override
         protected Void doInBackground(final Date... params) {
-            mAsyncTaskDao.deletePurchasesFromCycle(params[0], params[1], mCardName);
+            mAsyncTaskDao.deletePurchasesFromCycle(params[0], params[1], mCardId);
             return null;
         }
     }
 
     private static class getTotalPriceFromCycleAsyncTask extends AsyncTask<Date, Date, Void> {
         private PurchaseDao mAsyncTaskDao;
-        private String mCardName;
+        private int mCardId;
         static float mTotal;
 
-        getTotalPriceFromCycleAsyncTask(PurchaseDao dao, String cardName) {
+        getTotalPriceFromCycleAsyncTask(PurchaseDao dao, int cardId) {
             mAsyncTaskDao = dao;
-            mCardName = cardName;
+            mCardId = cardId;
         }
 
         @Override
         protected Void doInBackground(final Date... params) {
-            mTotal = mAsyncTaskDao.getTotalPriceFromCycle(params[0], params[1], mCardName);
+            mTotal = mAsyncTaskDao.getTotalPriceFromCycle(params[0], params[1], mCardId);
             return null;
         }
     }

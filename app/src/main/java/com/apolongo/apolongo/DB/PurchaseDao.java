@@ -26,21 +26,21 @@ public interface PurchaseDao {
     @Query("DELETE FROM purchases_table")
     void deleteAll();
 
-    @Query("DELETE FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_CardName = :cardName")
-    void deletePurchasesFromCycle(Date startDate, Date finishDate, String cardName);
+    @Query("DELETE FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId")
+    void deletePurchasesFromCycle(Date startDate, Date finishDate, int cardId);
 
     @Query("SELECT * FROM purchases_table ORDER BY purchase_date DESC")
     LiveData<List<Purchase>> getAllPurchases();
 
-    @Query("SELECT * FROM purchases_table WHERE purchase_CardName = :cardName ORDER BY purchase_date DESC")
-    LiveData<List<Purchase>> getPurchases(String cardName);
+    @Query("SELECT * FROM purchases_table WHERE purchase_cardId = :cardId ORDER BY purchase_date DESC")
+    LiveData<List<Purchase>> getPurchases(int cardId);
 
     @Query("SELECT * FROM purchases_table WHERE purchase_id = :purchaseId")
     Purchase getPurchaseById(int purchaseId);
 
-    @Query("SELECT * FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_CardName = :cardName")
-    LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, String cardName);
+    @Query("SELECT * FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId")
+    LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, int cardId);
 
-    @Query("SELECT SUM(purchase_price) FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_CardName = :cardName")
-    float getTotalPriceFromCycle(Date startDate, Date finishDate, String cardName);
+    @Query("SELECT SUM(purchase_price) FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId")
+    float getTotalPriceFromCycle(Date startDate, Date finishDate, int cardId);
 }

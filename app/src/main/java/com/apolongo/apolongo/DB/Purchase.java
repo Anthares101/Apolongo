@@ -10,10 +10,10 @@ import android.support.annotation.Nullable;
 
 import java.util.Date;
 
-@Entity(tableName = "purchases_table", indices = {@Index("purchase_CardName")}, //The index ignores a warning
+@Entity(tableName = "purchases_table", indices = {@Index("purchase_cardId")}, //The index ignores a warning
         foreignKeys = @ForeignKey(entity = Card.class,
-        parentColumns = "card_name",
-        childColumns = "purchase_CardName",
+        parentColumns = "card_id",
+        childColumns = "purchase_cardId",
         onDelete = ForeignKey.CASCADE))
 public class Purchase {
     
@@ -35,19 +35,19 @@ public class Purchase {
     @ColumnInfo(name = "purchase_sdescp")
     private String mPurchaseSDescp; //Short description of the purchase
     @NonNull
-    @ColumnInfo(name = "purchase_CardName")
-    private String mPurchaseCardName;
+    @ColumnInfo(name = "purchase_cardId")
+    private int mPurchaseCardId;
 
     //Constructor
     public Purchase(@NonNull String mPurchaseName, @NonNull Date mPurchaseDate,
                     @NonNull Float mPurchasePrice, @Nullable String mPurchaseSDescp,
-                    @NonNull String mPurchaseCardName){
+                    @NonNull int mPurchaseCardId){
         this.mPurchaseId = 0;
         this.mPurchaseName = mPurchaseName;
         this.mPurchaseDate = mPurchaseDate;
         this.mPurchasePrice = mPurchasePrice;
         this.mPurchaseSDescp = mPurchaseSDescp; //Short description is gonna be optional
-        this.mPurchaseCardName = mPurchaseCardName;
+        this.mPurchaseCardId = mPurchaseCardId;
     }
 
     //Getters
@@ -56,7 +56,7 @@ public class Purchase {
     public String getPurchaseName(){return mPurchaseName;}
     public Float getPurchasePrice(){return mPurchasePrice;}
     public String getPurchaseSDescp() {return mPurchaseSDescp;}
-    public String getPurchaseCardName() {return mPurchaseCardName;}
+    public int getPurchaseCardId() {return mPurchaseCardId;}
 
     //Setters
     public void setPurchaseId(int PurchaseId) {this.mPurchaseId = PurchaseId;}
@@ -64,5 +64,5 @@ public class Purchase {
     public void setPurchaseDate(Date PurchaseDate) {this.mPurchaseDate = PurchaseDate;}
     public void setPurchasePrice(Float PurchasePrice) {this.mPurchasePrice = PurchasePrice;}
     public void setPurchaseSDescp(String PurchaseDescp) {this.mPurchaseSDescp = PurchaseDescp;}
-    public void setPurchaseCardName(String PurchaseCard) {this.mPurchaseCardName = PurchaseCard;}
+    public void setPurchaseCardId(int PurchaseCard) {this.mPurchaseCardId = PurchaseCard;}
 }

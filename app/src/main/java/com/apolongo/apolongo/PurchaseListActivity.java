@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,17 +55,17 @@ public class PurchaseListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Date startDate = (Date)intent.getSerializableExtra("startDate");
         Date finishDate = (Date)intent.getSerializableExtra("finishDate");
-        String cardName = intent.getStringExtra("cardName");
-        mCycle = new Cycle(startDate, finishDate, cardName);
+        int cardId = intent.getIntExtra("cardId", 0);
+        mCycle = new Cycle(startDate, finishDate, cardId);
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
 
-        mApolongoViewModel.getPurchasesFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardName()).observe(this, new Observer<List<Purchase>>() {
+        mApolongoViewModel.getPurchasesFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardId()).observe(this, new Observer<List<Purchase>>() {
             @Override
             public void onChanged(@Nullable List<Purchase> purchases) {
                 //Set the total purchases value
-                String totalValue = Float.toString(mApolongoViewModel.getTotalPriceFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardName()));
+                String totalValue = Float.toString(mApolongoViewModel.getTotalPriceFromCycle(mCycle.getStart(), mCycle.getFinish(), mCycle.getCardId()));
                 String content = "Total " + totalValue + "€";
                 mTotalPrice.setText(content);
 
@@ -112,7 +110,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                     String purchaseDesc = data.getStringExtra("purchaseDesc");
 
                     //Insert the purchase in the database
-                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
+                    Purchase purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardId());
                     mApolongoViewModel.insertPurchase(purchase);
 
                     Toast.makeText(getApplicationContext(), R.string.button_save, Toast.LENGTH_LONG).show();
@@ -145,7 +143,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                         purchaseDesc = data.getStringExtra("purchaseDesc");
 
                         //Update the purchase in the database
-                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardId());
                         purchase.setPurchaseId(purchaseId);
                         mApolongoViewModel.updatePurchase(purchase);
 
@@ -160,7 +158,7 @@ public class PurchaseListActivity extends AppCompatActivity {
                         purchaseDesc = data.getStringExtra("purchaseDesc");
 
                         //Delete the purchase in the database
-                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardName());
+                        purchase = new Purchase(purchaseName, purchaseDate, purchasePrice, purchaseDesc, mCycle.getCardId());
                         purchase.setPurchaseId(purchaseId);
                         mApolongoViewModel.deletePurchase(purchase);
 

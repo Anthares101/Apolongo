@@ -20,6 +20,7 @@
     <string name="title_activity_purchase_list">Compras</string>
     <string name="tittle_activity_NewPurchase">"Añadir Compra"</string>
     <string name="tittle_activity_NewCard">"Añadir Tarjeta"</string>
-    <string name="tittle_activity_Purchase">"Información"</string>
+    <string name="tittle_activity_Purchase">"Información de compra"</string>
+    <string name="title_activity_Card">Información de tarjeta</string>
     <string name="tittle_activity_MainActivity">"Tarjetas"</string>
 </resources>

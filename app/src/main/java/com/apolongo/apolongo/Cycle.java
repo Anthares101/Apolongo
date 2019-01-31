@@ -5,12 +5,12 @@ import java.util.Date;
 public class Cycle {
     private Date mStart;
     private Date mFinish;
-    private String mCardName;
+    private int mCardId;
 
-    public Cycle(Date start, Date finish, String cardName){
+    public Cycle(Date start, Date finish, int cardName){
         mStart = start;
         mFinish = finish;
-        mCardName = cardName;
+        mCardId = cardName;
     }
 
     public Date getStart() {
@@ -21,5 +21,5 @@ public class Cycle {
         return mFinish;
     }
 
-    public String getCardName() {return mCardName;}
+    public int getCardId() {return mCardId;}
 }
