@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardViewHolder> {
 
-    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener, View.OnCreateContextMenuListener {
         private final TextView cardItemView;
         private ItemClickListener mItemClickListener;
 
@@ -26,8 +29,55 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             cardItemView = itemView.findViewById(R.id.textView);
 
             itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
+            itemView.setOnCreateContextMenuListener(this);
+            //itemView.setOnLongClickListener(this);
         }
+
+        //Create the contextual Menu
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+            MenuItem Edit = menu.add(Menu.NONE, 1, 1, R.string.action_edit);
+            MenuItem Delete = menu.add(Menu.NONE, 2, 2, R.string.action_delete);
+
+            Edit.setOnMenuItemClickListener(onEditMenu);
+            Delete.setOnMenuItemClickListener(onEditMenu);
+        }
+
+        //Menu item listener
+        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener(){
+          @Override
+          public boolean onMenuItemClick(MenuItem item){
+              switch (item.getItemId()){
+                  case 1://Launch CardActivity
+                      Toast.makeText(mInflater.getContext(), mCards.get(mPosition).getCardName() + " editada", Toast.LENGTH_LONG).show();
+                      break;
+                  case 2://Delete a Card
+                      final AlertDialog.Builder builder = new AlertDialog.Builder(mInflater.getContext());
+                      builder.setTitle("Borrar tarjeta " + mCards.get(mPosition).getCardName());
+                      final int position_copy = mPosition; //This variable is to evade an error
+                      builder.setMessage("Eliminará todas las compras relacionadas");
+                      builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              Toast.makeText(mInflater.getContext(), mCards.get(position_copy).getCardName() + " borrada", Toast.LENGTH_LONG).show();
+                              mViewModel.deleteCard(mCards.get(position_copy));
+                              notifyItemRemoved(position_copy);
+                          }
+                      });
+                      builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+                              dialog.cancel();
+                          }
+                      });
+                      AlertDialog dialog = builder.create();
+                      dialog.show();
+                      break;
+              }
+
+              return true;
+          }
+        };
 
         //Set a listener for both Long and short click in items
         private void setItemClickListener(ItemClickListener itemClickListener){
@@ -49,6 +99,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
     private final LayoutInflater mInflater;
     private List<Card> mCards; //Cached copy of cards
     private ApolongoViewModel mViewModel;
+    //Used to know where the used long clicked
+    private int mPosition;
 
     //We use the viewmodel to remove a Card Later
     CardListAdapter(Context context, ApolongoViewModel viewModel){
@@ -75,27 +127,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(final View view, int position, boolean isLongClick) {
-                if (isLongClick) {//Long click will allow user to delete a card
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                    builder.setTitle("Borrar tarjeta " + mCards.get(position).getCardName());
-                    final int position_copy = position; //This variable is to evade an error
-                    builder.setMessage("Eliminará todas las compras relacionadas");
-                    builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(view.getContext(), mCards.get(position_copy).getCardName() + " borrada", Toast.LENGTH_LONG).show();
-                            mViewModel.deleteCard(mCards.get(position_copy));
-                            notifyItemRemoved(position_copy);
-                        }
-                    });
-                    builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                if (isLongClick) {//Long click will safe some information about the selected item for the contextual menu
+                    mPosition = position;
                 } else {//Short click will take the user to the selected card purchases area
                     Intent intent = new Intent(view.getContext(), CycleListActivity.class);
                     intent.putExtra("cardName", mCards.get(position).getCardName());

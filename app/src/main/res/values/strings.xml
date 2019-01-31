@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Apolongo</string>
     <string name="action_settings">Ajustes</string>
+    <string name="action_delete">Borrar</string>
+    <string name="action_edit">Editar</string>
     <string name="no_dataYet">Cargando...</string>
     <string name="hint_word">Nombre tarjeta</string>
     <string name="hint_purchase_name">Nombre compra</string>
