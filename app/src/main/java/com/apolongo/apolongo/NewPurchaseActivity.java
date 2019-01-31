@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +23,23 @@ public class NewPurchaseActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_purchase);
+
+        //Initializes the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Add a back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         mEditPurchaseName = findViewById(R.id.edit_purchase_name);
         mEditPurchasePrice = findViewById(R.id.edit_purchase_price);
         mEditPurchaseDate = findViewById(R.id.edit_purchase_date);

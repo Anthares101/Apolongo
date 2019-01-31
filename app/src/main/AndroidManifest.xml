@@ -3,26 +3,40 @@
     package="com.apolongo.apolongo">
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".PurchaseListActivity"
             android:label="@string/title_activity_purchase_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity
             android:name=".PurchaseActivity"
             android:label="@string/tittle_activity_Purchase"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".CycleListActivity"
             android:label="@string/title_activity_cycle_list"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".NewCardActivity" android:label="@string/tittle_activity_NewCard"/>
-        <activity android:name=".NewPurchaseActivity" android:label="@string/tittle_activity_NewPurchase"/>
+
+        <activity
+            android:name=".NewCardActivity"
+            android:label="@string/tittle_activity_NewCard"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".NewPurchaseActivity"
+            android:label="@string/tittle_activity_NewPurchase"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -33,6 +47,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

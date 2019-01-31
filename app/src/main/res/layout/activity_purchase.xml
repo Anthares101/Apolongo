@@ -21,6 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_purchases" />
+    <include layout="@layout/content_purchase" />
 
 </android.support.design.widget.CoordinatorLayout>

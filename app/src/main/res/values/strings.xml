@@ -5,6 +5,7 @@
     <string name="action_edit">Editar</string>
     <string name="no_dataYet">Cargando...</string>
     <string name="hint_word">Nombre tarjeta</string>
+    <string name="hint_billingCycle">Día Ciclo Facturación</string>
     <string name="hint_purchase_name">Nombre compra</string>
     <string name="hint_purchase_price">Precio</string>
     <string name="hint_purchase_date">Fecha</string>
