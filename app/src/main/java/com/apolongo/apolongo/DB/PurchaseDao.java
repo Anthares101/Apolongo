@@ -38,7 +38,7 @@ public interface PurchaseDao {
     @Query("SELECT * FROM purchases_table WHERE purchase_id = :purchaseId")
     Purchase getPurchaseById(int purchaseId);
 
-    @Query("SELECT * FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId")
+    @Query("SELECT * FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId ORDER BY purchase_date DESC")
     LiveData<List<Purchase>> getPurchasesFromCycle(Date startDate, Date finishDate, int cardId);
 
     @Query("SELECT SUM(purchase_price) FROM purchases_table WHERE purchase_date >= :startDate and purchase_date <= :finishDate and purchase_cardId = :cardId")
