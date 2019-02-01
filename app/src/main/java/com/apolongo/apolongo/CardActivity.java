@@ -1,6 +1,7 @@
 package com.apolongo.apolongo;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.apolongo.apolongo.DB.Card;
 
@@ -19,6 +21,7 @@ public class CardActivity extends AppCompatActivity {
     private EditText mEditBillingCycle;
 
     private Card mCard;
+    private ApolongoViewModel mApolongoViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class CardActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
 
         Intent intent = getIntent();
 
@@ -72,15 +77,34 @@ public class CardActivity extends AppCompatActivity {
                             billingCycle.equals(Integer.toString(mCard.getBillingCycle()))){
 
                         setResult(RESULT_CANCELED, replyIntent);
+
+                        //It goes back to PurchaseListActivity
+                        finish();
                     }
                     else {//Changes detected
-                        replyIntent.putExtra("CardId", mCard.getCardId());
-                        replyIntent.putExtra("CardName", cardName);
-                        replyIntent.putExtra("BillingCycle", billingCycle);
-                        setResult(RESULT_OK, replyIntent);
+                        int number = 0;
+                        if(!cardName.equals(mCard.getCardName()))
+                            number = mApolongoViewModel.alreadyExist(cardName);
+
+                        if(number == 0) {
+                            if (Integer.parseInt(billingCycle) <= 0 || Integer.parseInt(billingCycle) > 31) {
+                                setResult(RESULT_CANCELED, replyIntent);
+                                Toast.makeText(getApplicationContext(), R.string.cycle_not_valid, Toast.LENGTH_LONG).show();
+                            } else {//All correct
+                                replyIntent.putExtra("CardId", mCard.getCardId());
+                                replyIntent.putExtra("CardName", cardName);
+                                replyIntent.putExtra("BillingCycle", billingCycle);
+                                setResult(RESULT_OK, replyIntent);
+
+                                //It goes back to PurchaseListActivity
+                                finish();
+                            }
+                        }
+                        else {//Already exists a card with the same name introduced
+                            setResult(RESULT_CANCELED, replyIntent);
+                            Toast.makeText(getApplicationContext(), R.string.alreadyExist_not_saved, Toast.LENGTH_LONG).show();
+                        }
                     }
-                    //It goes back to PurchaseListActivity
-                    finish();
                 }
             }
         });
