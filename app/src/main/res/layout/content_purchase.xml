@@ -8,81 +8,94 @@
     tools:context=".PurchaseActivity"
     tools:showIn="@layout/activity_purchase">
 
-    <EditText
-        android:id="@+id/edit_purchase_name"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_purchase_name"
-        android:inputType="text"
-        android:padding="@dimen/small_padding"
-        android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/edit_purchase_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_purchase_price"
-        android:inputType="numberDecimal"
-        android:padding="@dimen/small_padding"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_purchase_name"
-        tools:layout_editor_absoluteX="0dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit_purchase_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:focusable="false"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_purchase_date"
-        android:inputType="date"
-        android:maxLines="1"
-        android:padding="@dimen/small_padding"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_purchase_price"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/edit_purchase_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_purchase_name"
+                android:inputType="text"
+                android:padding="@dimen/small_padding"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="0dp" />
 
-    <EditText
-        android:id="@+id/edit_purchase_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-light"
-        android:hint="@string/hint_desc"
-        android:inputType="textMultiLine"
-        android:padding="@dimen/small_padding"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/edit_purchase_date"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/edit_purchase_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_purchase_price"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/small_padding"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/edit_purchase_name"
+                tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/button_save"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/button_save"
-        android:textColor="@color/buttonLabel"
-        app:layout_constraintTop_toBottomOf="@+id/edit_purchase_desc"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/edit_purchase_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_purchase_date"
+                android:inputType="date"
+                android:maxLines="1"
+                android:padding="@dimen/small_padding"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/edit_purchase_price"
+                tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/holo_red_light"
-        android:text="@string/button_delete"
-        android:textColor="@color/buttonLabel"
-        app:layout_constraintTop_toBottomOf="@+id/button_save"
-        tools:layout_editor_absoluteX="16dp" />
+            <EditText
+                android:id="@+id/edit_purchase_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:hint="@string/hint_desc"
+                android:inputType="textMultiLine"
+                android:padding="@dimen/small_padding"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/edit_purchase_date"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimary"
+                android:text="@string/button_save"
+                android:textColor="@color/buttonLabel"
+                app:layout_constraintTop_toBottomOf="@+id/edit_purchase_desc"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/holo_red_light"
+                android:text="@string/button_delete"
+                android:textColor="@color/buttonLabel"
+                app:layout_constraintTop_toBottomOf="@+id/button_save"
+                tools:layout_editor_absoluteX="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
