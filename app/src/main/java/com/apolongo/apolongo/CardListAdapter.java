@@ -33,13 +33,14 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.CardVi
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
 
-            //A OnClick listener is configured
+            //An OnClick listener is configured
             setItemClickListener(new ItemClickListener() {
                 @Override
                 public void onClick(final View view, int position, boolean isLongClick) {
                     if (!isLongClick) {//Short click will take the user to the selected card purchases area
                         Intent intent = new Intent(view.getContext(), CycleListActivity.class);
                         intent.putExtra("cardId", mCards.get(position).getCardId());
+                        intent.putExtra("cardName", mCards.get(position).getCardName());
                         intent.putExtra("cardCycle", mCards.get(position).getBillingCycle());
                         view.getContext().startActivity(intent);
                     }

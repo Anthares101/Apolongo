@@ -50,7 +50,11 @@ public class CycleListActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mCardId = intent.getIntExtra("cardId", 0);
+        String cardName = intent.getStringExtra("cardName");
         mCycle = intent.getIntExtra("cardCycle",1);
+
+        //Set personalized title
+        setTitle(getResources().getString(R.string.title_activity_cycle_list) + " " + cardName);
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final CycleListAdapter adapter = new CycleListAdapter(this, mApolongoViewModel);

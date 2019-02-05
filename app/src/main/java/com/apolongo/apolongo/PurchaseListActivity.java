@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apolongo.apolongo.Auxiliar.MonthConverter;
 import com.apolongo.apolongo.DB.Purchase;
 
 import java.text.DateFormat;
@@ -57,6 +58,16 @@ public class PurchaseListActivity extends AppCompatActivity {
         Date finishDate = (Date)intent.getSerializableExtra("finishDate");
         int cardId = intent.getIntExtra("cardId", 0);
         mCycle = new Cycle(startDate, finishDate, cardId);
+
+        //Get the cycle name
+        DateFormat format = new SimpleDateFormat("dd / MM / yyyy", Locale.ENGLISH);
+        String[] date = format.format(finishDate).split("/");
+        String day = date[0].replaceAll(" ","");
+        String month = date[1].replaceAll(" ", "");
+        String year = date[2].replaceAll(" ", "");
+
+        //Set personalized title
+        setTitle(getResources().getString(R.string.title_activity_purchase_list) + " de " + MonthConverter.getStringMonth(Integer.parseInt(month)) + " " + year);
 
         mApolongoViewModel = ViewModelProviders.of(this).get(ApolongoViewModel.class);
         final PurchaseListAdapter adapter = new PurchaseListAdapter(this, mApolongoViewModel);
