@@ -14,7 +14,7 @@ El calculo de los ciclos es automático y solo deberas preocuparte de ir añadie
 ## Icono de la aplicación
 De momento no contamos con uno y tenemos el que coloca nuestro entorno de desarrollo por defecto, estamos trabajando para traer un icono que sea del agrado de todos.
 
-## Futura 2.0
+# Futura 2.0
 Aunque la funcionalidad de la aplicación es una realidad finalmente se nos han quedado algunas ideas en el tintero en las que empezaremos a trabajar más adelante:
 
 * Añadir una imagen para cada una de las tarjetas añadidas y que facilite su identificación
