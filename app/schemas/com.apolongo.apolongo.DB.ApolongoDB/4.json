@@ -1,0 +1,116 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "1749c49b27ced1e1dc473e16d9c27cf7",
+    "entities": [
+      {
+        "tableName": "cards_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`card_name` TEXT NOT NULL, `card_image` TEXT NOT NULL, `card_cycle` INTEGER NOT NULL, PRIMARY KEY(`card_name`))",
+        "fields": [
+          {
+            "fieldPath": "mCardName",
+            "columnName": "card_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mImageName",
+            "columnName": "card_image",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mBillingCycle",
+            "columnName": "card_cycle",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "card_name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "purchases_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`purchase_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `purchase_name` TEXT NOT NULL, `purchase_date` INTEGER NOT NULL, `purchase_price` REAL NOT NULL, `purchase_sdescp` TEXT, `purchase_CardName` TEXT NOT NULL, FOREIGN KEY(`purchase_CardName`) REFERENCES `cards_table`(`card_name`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "mPurchaseId",
+            "columnName": "purchase_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mPurchaseName",
+            "columnName": "purchase_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mPurchaseDate",
+            "columnName": "purchase_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mPurchasePrice",
+            "columnName": "purchase_price",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mPurchaseSDescp",
+            "columnName": "purchase_sdescp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mPurchaseCardName",
+            "columnName": "purchase_CardName",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "purchase_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_purchases_table_purchase_CardName",
+            "unique": false,
+            "columnNames": [
+              "purchase_CardName"
+            ],
+            "createSql": "CREATE  INDEX `index_purchases_table_purchase_CardName` ON `${TABLE_NAME}` (`purchase_CardName`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "cards_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "purchase_CardName"
+            ],
+            "referencedColumns": [
+              "card_name"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1749c49b27ced1e1dc473e16d9c27cf7\")"
+    ]
+  }
+}
