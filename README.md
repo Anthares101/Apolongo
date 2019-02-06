@@ -10,6 +10,7 @@ El calculo de los ciclos es automático y solo deberas preocuparte de ir añadie
 * Calculo automático de ciclos en función del ciclo de facturación de la tarjeta y la fecha de tus compras
 * Borrar ciclos (Borrar un ciclo supone el borrado de todas las compras asociadas)
 * Añadir, editar y borrar compras por tarjeta.
+* Idioma soportado: Español.
 ## Icono de la aplicación
 De momento no contamos con uno y tenemos el que coloca nuestro entorno de desarrollo por defecto, estamos trabajando para traer un icono que sea del agrado de todos.
 
@@ -27,3 +28,4 @@ Aunque la funcionalidad de la aplicación es una realidad finalmente se nos han 
   facilitar su borrado.
   * Una opción que permita el borrado automático de las compras de ciclos antiguos (Fecha de antiguedad configurable por el  
   usuario)
+* Incluir traducción en Ingles.
