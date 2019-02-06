@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Apolongo</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="action_delete">Borrar</string>
+    <string name="action_edit">Editar</string>
+    <string name="no_dataYet">Cargando...</string>
+    <string name="hint_word">Nombre tarjeta</string>
+    <string name="hint_billingCycle">Día Ciclo Facturación</string>
+    <string name="hint_purchase_name">Nombre compra</string>
+    <string name="hint_purchase_price">Precio</string>
+    <string name="hint_purchase_date">Fecha</string>
+    <string name="hint_desc">Descripción...</string>
+    <string name="button_save">Guardar</string>
+    <string name="button_delete">Borrar</string>
+    <string name="saved">Cambios guardados</string>
+    <string name="empty_not_saved">No guardado</string>
+    <string name="alreadyExist_not_saved">El nombre ya existe</string>
+    <string name="cycle_not_valid">Introduzca un dia válido</string>
+    <string name="title_activity_cycle_list">Ciclos</string>
+    <string name="title_activity_purchase_list">Compras</string>
+    <string name="tittle_activity_NewPurchase">"Añadir Compra"</string>
+    <string name="tittle_activity_NewCard">"Añadir Tarjeta"</string>
+    <string name="tittle_activity_Purchase">"Información de compra"</string>
+    <string name="title_activity_Card">Información de tarjeta</string>
+    <string name="tittle_activity_MainActivity">"Tarjetas"</string>
+</resources>
