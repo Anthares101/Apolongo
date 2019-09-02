@@ -1,6 +1,6 @@
 # Apolongo 1.0
 
-Apolongo es una aplicación que te permite gestionar las compras que realizas con tus tarjetas de crédito ciclo a ciclo, pudiendo llevar un control de cada ciclo que va pasando por tarjeta y del importe total de cada uno.
+Apolongo es una aplicación desarrollada en Android Studio que te permite gestionar las compras que realizas con tus tarjetas de crédito ciclo a ciclo, pudiendo llevar un control de cada ciclo que va pasando por tarjeta y del importe total de cada uno.
 
 El calculo de los ciclos es automático y solo deberas preocuparte de ir añadiendo tus compras en la tarjeta correspondiente, asi que, instala la aplicacion, configura tus tarjetas (Un nombre y ciclo de facturación, la aplicación no va a pedirte el número de la misma no te preocupes) y empieza añadir compras para controlar efecientemente tus gastos.
 
